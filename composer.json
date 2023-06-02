@@ -33,7 +33,7 @@
     },
     "autoload": {
         "psr-4": {
-            "LaracraftTech\\LaravelSchemaRules\\": "src",
+            "LaracraftTech\\LaravelSchemaRules\\": "src"
         }
     },
     "autoload-dev": {
