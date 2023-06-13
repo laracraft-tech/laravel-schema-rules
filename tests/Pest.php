@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use LaracraftTech\LaravelSchemaRules\Tests\TestCase;
-use LaracraftTech\LaravelSchemaRules\Traits\RefreshDatabaseFast;
 
-uses(RefreshDatabaseFast::class);
-
-uses(TestCase::class)->in(__DIR__);
+uses(TestCase::class, RefreshDatabase::class)->beforeEach(function () {
+    ray()->clearAll();
+})->in(__DIR__);

@@ -1,5 +1,7 @@
 <?php
 
 return [
-    'tinyint_to_bool_rule' => env('SCHEMA_RULES_TINYINT_TO_BOOL_RULE', true),
+    'tinyint1_to_bool' => env('SCHEMA_RULES_TINYINT1_TO_BOOL', true),
+    'min_string' => env('SCHEMA_RULES_MIN_STRING', 1),
+    'min_int_unsigned' => env('SCHEMA_RULES_MIN_INT_UNSIGNED', 1),
 ];
