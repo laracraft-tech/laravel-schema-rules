@@ -32,7 +32,7 @@ class LaravelSchemaRulesServiceProvider extends PackageServiceProvider
             $connection = config('database.default');
             $driver = config("database.connections.{$connection}.driver");
 
-            $class =  match ($driver) {
+            $class = match ($driver) {
                 'mysql' => SchemaRulesResolverMysql::class,
                 default => throw new UnsupportedDbDriverException('This db driver is not supported: '.$driver),
             };

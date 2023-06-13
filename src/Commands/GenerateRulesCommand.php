@@ -25,7 +25,7 @@ class GenerateRulesCommand extends Command
 
         $rulesResolver = app()->make(SchemaRulesResolverInterface::class, [
             'table' => $table,
-            'fields' => array_filter(explode(',', $this->option('fields')))
+            'fields' => array_filter(explode(',', $this->option('fields'))),
         ]);
 
         $rules = $rulesResolver->generate();
@@ -37,12 +37,12 @@ class GenerateRulesCommand extends Command
         echo $this->transform($rules) . PHP_EOL;
 
         //pgsql
-//        $columns = DB::select(
-//            "SELECT column_name, data_type, character_maximum_length, is_nullable
-//    FROM INFORMATION_SCHEMA.COLUMNS
-//    WHERE table_name = :table",
-//            ['table' => $table]
-//        );
+        //        $columns = DB::select(
+        //            "SELECT column_name, data_type, character_maximum_length, is_nullable
+        //    FROM INFORMATION_SCHEMA.COLUMNS
+        //    WHERE table_name = :table",
+        //            ['table' => $table]
+        //        );
 
         return Command::SUCCESS;
     }
@@ -52,7 +52,7 @@ class GenerateRulesCommand extends Command
         $result = "[\n";
         foreach($rules as $key => $values) {
             $result .= "    '{$key}' => [";
-            $result .= implode(', ', array_map(function($value) { return "'{$value}'"; }, $values));
+            $result .= implode(', ', array_map(function ($value) { return "'{$value}'"; }, $values));
             $result .= "],\n";
         }
         $result .= "]";
