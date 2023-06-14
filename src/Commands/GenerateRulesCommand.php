@@ -18,9 +18,9 @@ class GenerateRulesCommand extends Command
     protected $description = 'Generate validation rules based on your database table schema';
 
     /**
-     * @throws Exception
      * @throws BindingResolutionException
-     * @throws ExceptionInterface
+     * @throws TableDoesNotExistException
+     * @throws ColumnDoesNotExistException
      */
     public function handle(): int
     {
