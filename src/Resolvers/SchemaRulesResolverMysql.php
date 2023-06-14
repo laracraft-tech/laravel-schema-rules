@@ -47,12 +47,14 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
             $field = $column->Field;
 
             // If specific fields where supplied only process those...
-            if (!empty($this->fields) && !in_array($field, $this->fields))
+            if (! empty($this->fields) && ! in_array($field, $this->fields)) {
                 continue;
+            }
 
             // We do not need a rule for auto increments
-            if ($column->Extra === 'auto_increment')
+            if ($column->Extra === 'auto_increment') {
                 continue;
+            }
 
             $tableRules[$field] = $this->generateColumnRules($column);
         }
@@ -74,15 +76,18 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
         switch (true) {
             case $type == 'tinyint(1)' && config('schema-rules.tinyint1_to_bool'):
                 $columnRules[] = "boolean";
+
                 break;
             case $type->contains('char'):
                 $columnRules[] = "string";
                 $columnRules[] = "min:".config('schema-rules.min_string');
                 $columnRules[] = "max:".filter_var($type, FILTER_SANITIZE_NUMBER_INT);
+
                 break;
             case $type == 'text':
                 $columnRules[] = "string";
                 $columnRules[] = "min:".config('schema-rules.min_string');
+
                 break;
             case $type->contains('int'):
                 $sign = ($type->contains('unsigned')) ? 'unsigned' : 'signed' ;
@@ -90,11 +95,13 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
                 $columnRules[] = "integer";
                 $columnRules[] = "min:".$this->integerTypes[$intType][$sign][0];
                 $columnRules[] = "max:".$this->integerTypes[$intType][$sign][1];
+
                 break;
                 //TODO double, decimal
             case $type->contains('enum'):
                 preg_match_all("/'([^']*)'/", $type, $matches);
                 $columnRules[] = "in:".implode(',', $matches[1]);
+
                 break;
         }
 
