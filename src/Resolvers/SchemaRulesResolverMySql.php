@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use stdClass;
 
-class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
+class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 {
     private array $integerTypes = [];
 
@@ -58,7 +58,7 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
 
             $tableRules[$field] = $this->generateColumnRules($column);
         }
-//dd($tableColumns);
+        //dd($tableColumns);
         return $tableRules;
     }
 

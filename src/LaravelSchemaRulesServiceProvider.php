@@ -5,7 +5,9 @@ namespace LaracraftTech\LaravelSchemaRules;
 use LaracraftTech\LaravelSchemaRules\Commands\GenerateRulesCommand;
 use LaracraftTech\LaravelSchemaRules\Exceptions\UnsupportedDbDriverException;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
-use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMysql;
+use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
+use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverPgSql;
+use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverSqlite;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -33,7 +35,9 @@ class LaravelSchemaRulesServiceProvider extends PackageServiceProvider
             $driver = config("database.connections.{$connection}.driver");
 
             $class = match ($driver) {
-                'mysql' => SchemaRulesResolverMysql::class,
+                'sqlite' => SchemaRulesResolverSqlite::class,
+                'mysql' => SchemaRulesResolverMySql::class,
+                'pgsql' => SchemaRulesResolverPgSql::class,
                 default => throw new UnsupportedDbDriverException('This db driver is not supported: '.$driver),
             };
 
