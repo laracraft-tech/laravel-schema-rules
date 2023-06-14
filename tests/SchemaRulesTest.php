@@ -30,7 +30,7 @@ it('generates rules based on the schema', function () {
         $table->decimal('nano');
         $table->unsignedDecimal('nano_unsigned');
         $table->enum('types_enum', ['a', 'b', 'c']);
-//            $table->set('types_set', ['a', 'b', 'c']);
+        //            $table->set('types_set', ['a', 'b', 'c']);
         $table->date('startDate')->useCurrent();
         $table->year('startYear')->useCurrent();
         $table->json('json_data');

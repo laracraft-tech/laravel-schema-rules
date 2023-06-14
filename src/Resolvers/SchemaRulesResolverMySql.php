@@ -98,9 +98,9 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 
                 break;
             case $type->contains('double') ||
-                $type->contains('decimal') ||
-                $type->contains('dec') ||
-                $type->contains('float'):
+            $type->contains('decimal') ||
+            $type->contains('dec') ||
+            $type->contains('float'):
                 // should we do more specific here?
                 // some kind of regex validation for double, double unsigned, double(8, 2), decimal etc...?
                 $columnRules[] = "numeric";
@@ -136,7 +136,7 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
                 $columnRules[] = 'json';
 
                 break;
-            // I think we skip BINARY and BLOB for now
+                // I think we skip BINARY and BLOB for now
         }
 
         return $columnRules;

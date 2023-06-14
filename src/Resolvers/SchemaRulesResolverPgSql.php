@@ -47,10 +47,12 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
 
     private function getColumnsDefinitionsFromTable()
     {
-        return DB::select("
+        return DB::select(
+            "
             SELECT column_name, data_type, character_maximum_length, is_nullable, column_default
                 FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE table_name = :table", ['table' => $this->table]
+            WHERE table_name = :table",
+            ['table' => $this->table]
         );
     }
 
@@ -83,20 +85,20 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
 
                 break;
             case $type->contains('double') ||
-                $type->contains('decimal') ||
-                $type->contains('numeric') ||
-                $type->contains('real'):
+            $type->contains('decimal') ||
+            $type->contains('numeric') ||
+            $type->contains('real'):
                 // should we do more specific here?
                 // some kind of regex validation for double, double unsigned, double(8, 2), decimal etc...?
                 $columnRules[] = "numeric";
 
                 break;
                 // unfortunately, it's not so easy in pgsql to find out if a column is an enum
-//            case $type->contains('enum') || $type->contains('set'):
-//                preg_match_all("/'([^']*)'/", $type, $matches);
-//                $columnRules[] = "in:".implode(',', $matches[1]);
-//
-//                break;
+                //            case $type->contains('enum') || $type->contains('set'):
+                //                preg_match_all("/'([^']*)'/", $type, $matches);
+                //                $columnRules[] = "in:".implode(',', $matches[1]);
+                //
+                //                break;
             case $type == 'date':
                 $columnRules[] = 'date';
 
@@ -113,7 +115,7 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
                 $columnRules[] = 'json';
 
                 break;
-            // I think we skip BINARY and BLOB for now
+                // I think we skip BINARY and BLOB for now
         }
 
         return $columnRules;

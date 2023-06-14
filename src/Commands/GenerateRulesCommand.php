@@ -2,7 +2,6 @@
 
 namespace LaracraftTech\LaravelSchemaRules\Commands;
 
-use Doctrine\DBAL\Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Schema;
@@ -33,7 +32,7 @@ class GenerateRulesCommand extends Command
 
         $rulesResolver = app()->make(SchemaRulesResolverInterface::class, [
             'table' => $table,
-            'columns' => $columns
+            'columns' => $columns,
         ]);
 
         $rules = $rulesResolver->generate();
@@ -48,7 +47,7 @@ class GenerateRulesCommand extends Command
         $result = "[\n";
         foreach($rules as $key => $values) {
             $result .= "    '{$key}' => [";
-            $result .= implode(', ', array_map(function($value) { return "'{$value}'"; }, $values));
+            $result .= implode(', ', array_map(function ($value) { return "'{$value}'"; }, $values));
             $result .= "],\n";
         }
         $result .= "]";
@@ -65,6 +64,7 @@ class GenerateRulesCommand extends Command
     {
         if (count($tables = array_filter(explode(',', $table))) > 1) {
             $msg = 'The command can only handle one table at a time - you gave: '.implode(', ', $tables);
+
             throw new MultipleTablesSuppliedException($msg);
         }
 
@@ -83,8 +83,9 @@ class GenerateRulesCommand extends Command
             }
         }
 
-        if (!empty($missingColumns)) {
+        if (! empty($missingColumns)) {
             $msg = "The following columns do not exists on the table '$table': ".implode(', ', $missingColumns);
+
             throw new ColumnDoesNotExistException($msg);
         }
     }

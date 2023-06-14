@@ -85,7 +85,7 @@ class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
                 $columnRules[] = 'date_format:Y-m-d H:i:s';
 
                 break;
-            // I think we skip BINARY and BLOB for now
+                // I think we skip BINARY and BLOB for now
         }
 
         return $columnRules;
