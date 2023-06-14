@@ -13,7 +13,7 @@ use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 
 class GenerateRulesCommand extends Command
 {
-    protected $signature = 'schema:generate-rules {table : The table of which you want to generate the rules of}
+    protected $signature = 'schema:generate-rules {table : The table of which you want to generate the rules}
                {--columns= : Optionally only create rules for specific columns of the table}';
 
     protected $description = 'Generate validation rules based on your database table schema';
