@@ -58,7 +58,7 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
 
             $tableRules[$field] = $this->generateColumnRules($column);
         }
-
+//dd($tableColumns);
         return $tableRules;
     }
 
@@ -97,12 +97,46 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
                 $columnRules[] = "max:".$this->integerTypes[$intType][$sign][1];
 
                 break;
-                //TODO double, decimal
-            case $type->contains('enum'):
+            case $type->contains('double') ||
+                $type->contains('decimal') ||
+                $type->contains('dec') ||
+                $type->contains('float'):
+                // should we do more specific here?
+                // some kind of regex validation for double, double unsigned, double(8, 2), decimal etc...?
+                $columnRules[] = "numeric";
+
+                break;
+            case $type->contains('enum') || $type->contains('set'):
                 preg_match_all("/'([^']*)'/", $type, $matches);
                 $columnRules[] = "in:".implode(',', $matches[1]);
 
                 break;
+            case $type == 'year':
+                $columnRules[] = 'integer';
+                $columnRules[] = 'min:1901';
+                $columnRules[] = 'max:2155';
+
+                break;
+            case $type == 'date':
+                $columnRules[] = 'date';
+
+                break;
+            case $type == 'time':
+                $columnRules[] = 'H:i:s';
+
+                break;
+            case $type == 'timestamp':
+                // handle mysql "year 2038 problem"
+                $columnRules[] = 'date_format:Y-m-d H:i:s';
+                $columnRules[] = 'after_or_equal:1970-01-01 00:00:01';
+                $columnRules[] = 'before_or_equal:2038-01-19 03:14:07';
+
+                break;
+            case $type == 'json':
+                $columnRules[] = 'json';
+
+                break;
+            // I think we skip BINARY and BLOB for now
         }
 
         return $columnRules;
