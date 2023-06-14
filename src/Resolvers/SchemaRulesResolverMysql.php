@@ -11,8 +11,8 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
     private array $integerTypes = [];
 
     public function __construct(
-        private string $table,
-        private array $fields = []
+        private readonly string $table,
+        private readonly array  $columns = []
     ) {
         $this->integerTypes = [
             'tinyint' => [
@@ -46,8 +46,8 @@ class SchemaRulesResolverMysql implements SchemaRulesResolverInterface
         foreach ($tableColumns as $column) {
             $field = $column->Field;
 
-            // If specific fields where supplied only process those...
-            if (! empty($this->fields) && ! in_array($field, $this->fields)) {
+            // If specific columns where supplied only process those...
+            if (! empty($this->columns) && ! in_array($field, $this->columns)) {
                 continue;
             }
 

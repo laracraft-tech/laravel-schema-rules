@@ -7,53 +7,43 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Schema;
 use LaracraftTech\LaravelSchemaRules\Exceptions\ColumnDoesNotExistException;
+use LaracraftTech\LaravelSchemaRules\Exceptions\MultipleTablesSuppliedException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\TableDoesNotExistException;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 
 class GenerateRulesCommand extends Command
 {
     protected $signature = 'schema:generate-rules {table : The table of which you want to generate the rules of}
-               {--fields= : Optionally only create rules for specific fields of the table}';
+               {--columns= : Optionally only create rules for specific columns of the table}';
 
     protected $description = 'Generate validation rules based on your database table schema';
 
     /**
      * @throws BindingResolutionException
+     * @throws MultipleTablesSuppliedException
      * @throws TableDoesNotExistException
      * @throws ColumnDoesNotExistException
      */
     public function handle(): int
     {
         $table = $this->argument('table');
-        $fields = array_filter(explode(',', $this->option('fields')));
+        $columns = array_filter(explode(',', $this->option('columns')));
 
-        $this->checkTableAndColumns($table, $fields);
+        $this->checkTableAndColumns($table, $columns);
 
         $rulesResolver = app()->make(SchemaRulesResolverInterface::class, [
             'table' => $table,
-            'fields' => $fields
+            'columns' => $columns
         ]);
 
         $rules = $rulesResolver->generate();
 
-        $this->components->info("Schema-based validation rules for table \"$table\" generated!");
-
-        $this->info('Paste these to your controller validation or form request rules:');
-
-        echo $this->format($rules) . PHP_EOL;
-
-        //pgsql
-//        $columns = DB::select(
-//            "SELECT column_name, data_type, character_maximum_length, is_nullable
-//    FROM INFORMATION_SCHEMA.COLUMNS
-//    WHERE table_name = :table",
-//            ['table' => $table]
-//        );
+        $this->output($table, $rules);
 
         return Command::SUCCESS;
     }
 
-    private function format($rules)
+    private function format($rules): string
     {
         $result = "[\n";
         foreach($rules as $key => $values) {
@@ -67,17 +57,23 @@ class GenerateRulesCommand extends Command
     }
 
     /**
+     * @throws MultipleTablesSuppliedException
      * @throws ColumnDoesNotExistException
      * @throws TableDoesNotExistException
      */
-    private function checkTableAndColumns(string $table, array $columns = []): bool
+    private function checkTableAndColumns(string $table, array $columns = []): void
     {
+        if (count($tables = array_filter(explode(',', $table))) > 1) {
+            $msg = 'The command can only handle one table at a time - you gave: '.implode(', ', $tables);
+            throw new MultipleTablesSuppliedException($msg);
+        }
+
         if (! Schema::hasTable($table)) {
             throw new TableDoesNotExistException("Table '$table' not found!");
         }
 
         if (empty($columns)) {
-            return true;
+            return;
         }
 
         $missingColumns = [];
@@ -91,7 +87,14 @@ class GenerateRulesCommand extends Command
             $msg = "The following columns do not exists on the table '$table': ".implode(', ', $missingColumns);
             throw new ColumnDoesNotExistException($msg);
         }
+    }
 
-        return true;
+    private function output(string $table, array $rules): void
+    {
+        $this->components->info("Schema-based validation rules for table \"$table\" generated!");
+
+        $this->info('Copy & paste these to your controller validation or form request rules:');
+
+        echo $this->format($rules) . PHP_EOL;
     }
 }
