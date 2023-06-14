@@ -5,6 +5,9 @@ namespace LaracraftTech\LaravelSchemaRules\Commands;
 use Doctrine\DBAL\Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Facades\Schema;
+use LaracraftTech\LaravelSchemaRules\Exceptions\ColumnDoesNotExistException;
+use LaracraftTech\LaravelSchemaRules\Exceptions\TableDoesNotExistException;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 
 class GenerateRulesCommand extends Command
@@ -22,10 +25,13 @@ class GenerateRulesCommand extends Command
     public function handle(): int
     {
         $table = $this->argument('table');
+        $fields = array_filter(explode(',', $this->option('fields')));
+
+        $this->checkTableAndColumns($table, $fields);
 
         $rulesResolver = app()->make(SchemaRulesResolverInterface::class, [
             'table' => $table,
-            'fields' => array_filter(explode(',', $this->option('fields')))
+            'fields' => $fields
         ]);
 
         $rules = $rulesResolver->generate();
@@ -34,7 +40,7 @@ class GenerateRulesCommand extends Command
 
         $this->info('Paste these to your controller validation or form request rules:');
 
-        echo $this->transform($rules) . PHP_EOL;
+        echo $this->format($rules) . PHP_EOL;
 
         //pgsql
 //        $columns = DB::select(
@@ -47,7 +53,7 @@ class GenerateRulesCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function transform($rules)
+    private function format($rules)
     {
         $result = "[\n";
         foreach($rules as $key => $values) {
@@ -58,5 +64,34 @@ class GenerateRulesCommand extends Command
         $result .= "]";
 
         return $result;
+    }
+
+    /**
+     * @throws ColumnDoesNotExistException
+     * @throws TableDoesNotExistException
+     */
+    private function checkTableAndColumns(string $table, array $columns = []): bool
+    {
+        if (! Schema::hasTable($table)) {
+            throw new TableDoesNotExistException("Table '$table' not found!");
+        }
+
+        if (empty($columns)) {
+            return true;
+        }
+
+        $missingColumns = [];
+        foreach ($columns as $column) {
+            if (! Schema::hasColumn($table, $column)) {
+                $missingColumns[] = $column;
+            }
+        }
+
+        if (!empty($missingColumns)) {
+            $msg = "The following columns do not exists on the table '$table': ".implode(', ', $missingColumns);
+            throw new ColumnDoesNotExistException($msg);
+        }
+
+        return true;
     }
 }
