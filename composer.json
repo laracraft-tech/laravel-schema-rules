@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
+        "brick/varexporter": "^0.3.8",
         "doctrine/dbal": "^3.6",
         "illuminate/contracts": "^8.0 || ^9.0 || ^10.0",
         "illuminate/database": "^8.0 || ^9.0 || ^10.0",

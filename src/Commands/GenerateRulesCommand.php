@@ -2,6 +2,7 @@
 
 namespace LaracraftTech\LaravelSchemaRules\Commands;
 
+use Brick\VarExporter\VarExporter;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Schema;
@@ -42,15 +43,7 @@ class GenerateRulesCommand extends Command
 
     private function format($rules): string
     {
-        $result = "[\n";
-        foreach($rules as $key => $values) {
-            $result .= "    '{$key}' => [";
-            $result .= implode(', ', array_map(function ($value) { return "'{$value}'"; }, $values));
-            $result .= "],\n";
-        }
-        $result .= "]";
-
-        return $result;
+        return VarExporter::export($rules, VarExporter::INLINE_SCALAR_LIST);
     }
 
     /**
