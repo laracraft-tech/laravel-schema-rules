@@ -43,7 +43,7 @@ it('only handles existing tables', function () {
     $this->expectException(TableDoesNotExistException::class);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $table.'1'
+        'table' => $table.'1',
     ]);
 });
 
@@ -56,7 +56,7 @@ it('only handles one table at a time', function () {
     $this->expectException(MultipleTablesSuppliedException::class);
 
     $this->artisan("schema:generate-rules", [
-        'table' => "$table,tests2"
+        'table' => "$table,tests2",
     ]);
 });
 
@@ -87,7 +87,7 @@ it('generates required and null validation rules from table schema', function ()
     ])->generate();
 
     $this->expect($rules)->toBe([
-        $nullableStringColumnName => ['nullable', 'string', 'min:1']
+        $nullableStringColumnName => ['nullable', 'string', 'min:1'],
     ]);
 
     $this->artisan("schema:generate-rules $table")->assertSuccessful();
@@ -106,7 +106,7 @@ it('generates boolean validation rules from table schema', function () {
     ])->generate();
 
     $this->expect($rules)->toBe([
-        $boolColumnName => ['required', 'boolean']
+        $boolColumnName => ['required', 'boolean'],
     ]);
 
     $this->artisan("schema:generate-rules $table")->assertSuccessful();
@@ -210,7 +210,7 @@ it('generates json validation rules from table schema', function () {
     ])->generate();
 
     $this->expect($rules)->toBe([
-        $jsonColumnName => ['required', 'string', 'min:1']
+        $jsonColumnName => ['required', 'string', 'min:1'],
     ]);
 
     $this->artisan("schema:generate-rules $table")->assertSuccessful();
