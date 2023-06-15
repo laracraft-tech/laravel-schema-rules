@@ -31,12 +31,10 @@ class GenerateRulesCommand extends Command
 
         $this->checkTableAndColumns($table, $columns);
 
-        $rulesResolver = app()->make(SchemaRulesResolverInterface::class, [
+        $rules = app()->make(SchemaRulesResolverInterface::class, [
             'table' => $table,
             'columns' => $columns
-        ]);
-
-        $rules = $rulesResolver->generate();
+        ])->generate();
 
         $this->output($table, $rules);
 
@@ -91,10 +89,8 @@ class GenerateRulesCommand extends Command
 
     private function output(string $table, array $rules): void
     {
-        $this->components->info("Schema-based validation rules for table \"$table\" generated!");
-
+        $this->info("Schema-based validation rules for table \"$table\" generated!");
         $this->info('Copy & paste these to your controller validation or form request rules:');
-
-        echo $this->format($rules) . PHP_EOL;
+        $this->line($this->format($rules));
     }
 }

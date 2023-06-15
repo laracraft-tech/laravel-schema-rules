@@ -8,6 +8,7 @@ use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverPgSql;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverSqlite;
+use Spatie\LaravelPackageTools\Exceptions\InvalidPackage;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -26,6 +27,9 @@ class LaravelSchemaRulesServiceProvider extends PackageServiceProvider
             ->hasCommand(GenerateRulesCommand::class);
     }
 
+    /**
+     * @throws InvalidPackage
+     */
     public function register()
     {
         parent::register();
@@ -34,14 +38,14 @@ class LaravelSchemaRulesServiceProvider extends PackageServiceProvider
             $connection = config('database.default');
             $driver = config("database.connections.{$connection}.driver");
 
-            $class = match ($driver) {
-                'sqlite' => SchemaRulesResolverSqlite::class,
-                'mysql' => SchemaRulesResolverMySql::class,
-                'pgsql' => SchemaRulesResolverPgSql::class,
-                default => throw new UnsupportedDbDriverException('This db driver is not supported: '.$driver),
+            switch ($driver) {
+                case 'sqlite': $class = SchemaRulesResolverSqlite::class; break;
+                case 'mysql': $class = SchemaRulesResolverMySql::class; break;
+                case 'pgsql': $class = SchemaRulesResolverPgSql::class; break;
+                default: throw new UnsupportedDbDriverException('This db driver is not supported: '.$driver);
             };
 
-            return new $class(...$parameters);
+            return new $class(...array_values($parameters));
         });
     }
 }

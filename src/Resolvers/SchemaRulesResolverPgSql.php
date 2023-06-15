@@ -8,12 +8,15 @@ use stdClass;
 
 class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
 {
+    private string $table;
+    private array $columns;
     private array $integerTypes = [];
 
-    public function __construct(
-        private readonly string $table,
-        private readonly array  $columns = []
-    ) {
+    public function __construct(string $table, array $columns = [])
+    {
+        $this->table = $table;
+        $this->columns = $columns;
+
         $this->integerTypes = [
             'smallint' => ['-32768', '32767'],
             'integer' => ['-2147483648', '2147483647'],
@@ -105,7 +108,9 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
                 $columnRules[] = 'json';
 
                 break;
-            // I think we skip BINARY and BLOB for now
+            default:
+                // I think we skip BINARY and BLOB for now
+                break;
         }
 
         return $columnRules;

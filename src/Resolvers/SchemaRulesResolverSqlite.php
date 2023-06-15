@@ -8,11 +8,13 @@ use stdClass;
 
 class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
 {
-    public function __construct(
-        private readonly string $table,
-        private readonly array  $columns = []
-    ) {
-        // constructor
+    private string $table;
+    private array $columns;
+
+    public function __construct(string $table, array $columns = [])
+    {
+        $this->table = $table;
+        $this->columns = $columns;
     }
 
     public function generate(): array
@@ -76,7 +78,9 @@ class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
                 $columnRules[] = 'date';
 
                 break;
-            // I think we skip BINARY and BLOB for now
+            default:
+                // I think we skip BINARY and BLOB for now
+                break;
         }
 
         return $columnRules;
