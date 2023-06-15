@@ -97,16 +97,8 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
 //                $columnRules[] = "in:".implode(',', $matches[1]);
 //
 //                break;
-            case $type == 'date':
+            case $type == 'date' || $type->contains('time '):
                 $columnRules[] = 'date';
-
-                break;
-            case $type->contains('time '):
-                $columnRules[] = 'H:i:s';
-
-                break;
-            case $type->contains('timestamp'):
-                $columnRules[] = 'date_format:Y-m-d H:i:s';
 
                 break;
             case $type == 'json':

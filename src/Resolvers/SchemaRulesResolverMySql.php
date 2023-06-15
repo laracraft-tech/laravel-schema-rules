@@ -117,17 +117,13 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
                 $columnRules[] = 'max:2155';
 
                 break;
-            case $type == 'date':
+            case $type == 'date' || $type == 'time':
                 $columnRules[] = 'date';
-
-                break;
-            case $type == 'time':
-                $columnRules[] = 'H:i:s';
 
                 break;
             case $type == 'timestamp':
                 // handle mysql "year 2038 problem"
-                $columnRules[] = 'date_format:Y-m-d H:i:s';
+                $columnRules[] = 'date';
                 $columnRules[] = 'after_or_equal:1970-01-01 00:00:01';
                 $columnRules[] = 'before_or_equal:2038-01-19 03:14:07';
 

@@ -72,17 +72,8 @@ class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
                 $columnRules[] = "numeric";
 
                 break;
-            case $type == 'date':
+            case $type == 'date' || $type == 'time' || $type == 'datetime':
                 $columnRules[] = 'date';
-
-                break;
-            case $type == 'time':
-                $columnRules[] = 'H:i:s';
-
-                break;
-            case $type == 'datetime':
-                // handle mysql "year 2038 problem"
-                $columnRules[] = 'date_format:Y-m-d H:i:s';
 
                 break;
             // I think we skip BINARY and BLOB for now
