@@ -28,7 +28,7 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         Schema::dropAllTables();
-//        config()->set('database.default', 'testing');
+        //        config()->set('database.default', 'testing');
 
         /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-dynamic-model_table.php.stub';
