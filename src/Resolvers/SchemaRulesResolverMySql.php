@@ -10,35 +10,34 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 {
     private string $table;
     private array $columns;
-    private array $integerTypes = [];
+
+    public static array $integerTypes = [
+        'tinyint' => [
+            'unsigned' => ['0', '255'],
+            'signed' => ['-128', '127'],
+        ],
+        'smallint' => [
+            'unsigned' => ['0', '65535'],
+            'signed' => ['-32768', '32767'],
+        ],
+        'mediumint' => [
+            'unsigned' => ['0', '16777215'],
+            'signed' => ['-8388608', '8388607'],
+        ],
+        'int' => [
+            'unsigned' => ['0', '4294967295'],
+            'signed' => ['-2147483648', '2147483647'],
+        ],
+        'bigint' => [
+            'unsigned' => ['0', '18446744073709551615'],
+            'signed' => ['-9223372036854775808', '9223372036854775807'],
+        ],
+    ];
 
     public function __construct(string $table, array $columns = [])
     {
         $this->table = $table;
         $this->columns = $columns;
-
-        $this->integerTypes = [
-            'tinyint' => [
-                'unsigned' => [config('schema-rules.min_int_unsigned'), '255'],
-                'signed' => ['-128', '127'],
-            ],
-            'smallint' => [
-                'unsigned' => [config('schema-rules.min_int_unsigned'), '65535'],
-                'signed' => ['-32768', '32767'],
-            ],
-            'mediumint' => [
-                'unsigned' => [config('schema-rules.min_int_unsigned'), '16777215'],
-                'signed' => ['-8388608', '8388607'],
-            ],
-            'int' => [
-                'unsigned' => [config('schema-rules.min_int_unsigned'), '4294967295'],
-                'signed' => ['-2147483648', '2147483647'],
-            ],
-            'bigint' => [
-                'unsigned' => [config('schema-rules.min_int_unsigned'), '18446744073709551615'],
-                'signed' => ['-9223372036854775808', '9223372036854775807'],
-            ],
-        ];
     }
 
     public function generate(): array
@@ -83,21 +82,21 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
                 break;
             case $type->contains('char'):
                 $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.min_string');
+                $columnRules[] = "min:".config('schema-rules.string_min_length');
                 $columnRules[] = "max:".filter_var($type, FILTER_SANITIZE_NUMBER_INT);
 
                 break;
             case $type == 'text':
                 $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.min_string');
+                $columnRules[] = "min:".config('schema-rules.string_min_length');
 
                 break;
             case $type->contains('int'):
                 $sign = ($type->contains('unsigned')) ? 'unsigned' : 'signed' ;
                 $intType = $type->before(' unsigned')->__toString();
                 $columnRules[] = "integer";
-                $columnRules[] = "min:".$this->integerTypes[$intType][$sign][0];
-                $columnRules[] = "max:".$this->integerTypes[$intType][$sign][1];
+                $columnRules[] = "min:".self::$integerTypes[$intType][$sign][0];
+                $columnRules[] = "max:".self::$integerTypes[$intType][$sign][1];
 
                 break;
             case $type->contains('double') ||
@@ -111,7 +110,8 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
                 break;
             case $type->contains('enum') || $type->contains('set'):
                 preg_match_all("/'([^']*)'/", $type, $matches);
-                $columnRules[] = "in:".implode(',', $matches[1]);
+                $columnRules[] = 'string';
+                $columnRules[] = 'in:'.implode(',', $matches[1]);
 
                 break;
             case $type == 'year':

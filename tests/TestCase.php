@@ -3,6 +3,7 @@
 namespace LaracraftTech\LaravelSchemaRules\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Schema;
 use LaracraftTech\LaravelSchemaRules\LaravelSchemaRulesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -26,7 +27,8 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
+        Schema::dropAllTables();
+//        config()->set('database.default', 'testing');
 
         /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-dynamic-model_table.php.stub';

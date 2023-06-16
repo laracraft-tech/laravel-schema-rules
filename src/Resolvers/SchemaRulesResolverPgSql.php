@@ -10,18 +10,17 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
 {
     private string $table;
     private array $columns;
-    private array $integerTypes = [];
+
+    public static array $integerTypes = [
+        'smallint' => ['-32768', '32767'],
+        'integer' => ['-2147483648', '2147483647'],
+        'bigint' => ['-9223372036854775808', '9223372036854775807'],
+    ];
 
     public function __construct(string $table, array $columns = [])
     {
         $this->table = $table;
         $this->columns = $columns;
-
-        $this->integerTypes = [
-            'smallint' => ['-32768', '32767'],
-            'integer' => ['-2147483648', '2147483647'],
-            'bigint' => ['-9223372036854775808', '9223372036854775807'],
-        ];
     }
 
     public function generate(): array
@@ -72,19 +71,19 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
                 break;
             case $type->contains('char'):
                 $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.min_string');
+                $columnRules[] = "min:".config('schema-rules.string_min_length');
                 $columnRules[] = "max:".$column->character_maximum_length;
 
                 break;
             case $type == 'text':
                 $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.min_string');
+                $columnRules[] = "min:".config('schema-rules.string_min_length');
 
                 break;
             case $type->contains('int'):
                 $columnRules[] = "integer";
-                $columnRules[] = "min:".$this->integerTypes[$type->__toString()][0];
-                $columnRules[] = "max:".$this->integerTypes[$type->__toString()][1];
+                $columnRules[] = "min:".self::$integerTypes[$type->__toString()][0];
+                $columnRules[] = "max:".self::$integerTypes[$type->__toString()][1];
 
                 break;
             case $type->contains('double') ||
