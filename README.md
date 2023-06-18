@@ -37,16 +37,20 @@ Schema::create('persons', function (Blueprint $table) {
     $table->enum('gender', ['m', 'f', 'd']);
     $table->date('birth');
     $table->year('graduated');
-    $table->float('body_size'); // not jet validated
+    $table->float('body_size');
     $table->unsignedTinyInteger('children_count')->nullable();
     $table->integer('net_income');
     $table->boolean('send_newsletter')->nullable();
 });
 ````
 
-Now if you run: `php artisan schema:generate-rules persons`
+### Generate rules for the whole table
 
-You'll get the following:
+Now if you run:
+
+`php artisan schema:generate-rules persons`
+
+You'll get:
 ```
 Schema-based validation rules for table "persons" have been generated!
 Copy & paste these to your controller validation or form request or where ever your validation takes place:
@@ -65,7 +69,14 @@ Copy & paste these to your controller validation or form request or where ever y
 ]
 ```
 
-You can also explicitly specify the columns: `php artisan schema:generate-rules persons --columns first_name,last_name,email`
+As you may have noticed the float `body_size` column, just gets generated to `['required', 'numeric']`.
+Proper rules for `float`, `decimal` and `double`, are not yet implemented! 
+
+### Generate rules for specific columns
+
+You can also explicitly specify the columns:
+
+`php artisan schema:generate-rules persons --columns first_name,last_name,email`
 
 Which gives you:
 ````
