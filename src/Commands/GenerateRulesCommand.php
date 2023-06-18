@@ -83,8 +83,8 @@ class GenerateRulesCommand extends Command
 
     private function output(string $table, array $rules): void
     {
-        $this->info("Schema-based validation rules for table \"$table\" generated!");
-        $this->info('Copy & paste these to your controller validation or form request rules:');
+        $this->info("Schema-based validation rules for table \"$table\" have been generated!");
+        $this->info('Copy & paste these to your controller validation or form request or where ever your validation takes place:');
         $this->line($this->format($rules));
     }
 }

@@ -27,7 +27,6 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        Schema::dropAllTables();
 //        config()->set('database.default', 'testing');
 
         /*

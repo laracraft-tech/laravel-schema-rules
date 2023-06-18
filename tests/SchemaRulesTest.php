@@ -8,79 +8,78 @@ use LaracraftTech\LaravelSchemaRules\Exceptions\TableDoesNotExistException;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
 
+beforeEach(function () {
+    $this->tableName = 'tests';
+    Schema::dropIfExists($this->tableName);
+});
+
 it('only accepts a table argument', function () {
-    $tableName = 'tests';
-    Schema::create($tableName, function (Blueprint $table) {
+    Schema::create($this->tableName, function (Blueprint $table) {
         $table->boolean('test_bool');
     });
 
     $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);
 
     $this->artisan("schema:generate-rules", [
-        'foo' => $tableName,
+        'foo' => $this->tableName,
     ]);
 });
 
 it('only accepts a --columns option', function () {
-    $tableName = 'tests';
-    Schema::create($tableName, function (Blueprint $table) {
+    Schema::create($this->tableName, function (Blueprint $table) {
         $table->boolean('test_bool');
     });
 
     $this->expectException(\Symfony\Component\Console\Exception\InvalidOptionException::class);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
         '--foo' => 'test_bool',
     ]);
 });
 
 it('only handles existing tables', function () {
-    $tableName = 'tests';
-    Schema::create($tableName, function (Blueprint $table) {
+    Schema::create($this->tableName, function (Blueprint $table) {
         $table->boolean('test_bool');
     });
 
     $this->expectException(TableDoesNotExistException::class);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName.'1',
+        'table' => $this->tableName.'1',
     ]);
 });
 
 it('only handles one table at a time', function () {
-    $tableName = 'tests';
-    Schema::create($tableName, function (Blueprint $table) {
+    Schema::create($this->tableName, function (Blueprint $table) {
         $table->boolean('test_bool');
     });
 
     $this->expectException(MultipleTablesSuppliedException::class);
 
     $this->artisan("schema:generate-rules", [
-        'table' => "$tableName,tests2",
+        'table' => $this->tableName.',tests2',
     ]);
 });
 
 it('only handles existing table columns if supplied ', function () {
-    $tableName = 'tests';
-    Schema::create($tableName, function (Blueprint $table) {
+    Schema::create($this->tableName, function (Blueprint $table) {
         $table->boolean('test_bool');
     });
 
     $this->expectException(ColumnDoesNotExistException::class);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
         '--columns' => 'foo',
     ]);
 });
 
 it('generates required and null validation rules from table schema', function () {
-    $tableName = 'tests';
     $stringColumnName = 'test_string';
     $stringNullableColumnName = 'test_string_nullable';
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $stringColumnName,
         $stringNullableColumnName
     ) {
@@ -89,7 +88,7 @@ it('generates required and null validation rules from table schema', function ()
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $this->expect($rules)->toBe([
@@ -98,16 +97,15 @@ it('generates required and null validation rules from table schema', function ()
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates boolean validation rules from table schema', function () {
-    $tableName = 'tests';
     $boolColumnName = 'test_bool';
     $boolNullableColumnName = 'test_bool_nullable';
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $boolColumnName,
         $boolNullableColumnName
     ) {
@@ -116,7 +114,7 @@ it('generates boolean validation rules from table schema', function () {
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $this->expect($rules)->toBe([
@@ -125,19 +123,18 @@ it('generates boolean validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates string validation rules from table schema', function () {
-    $tableName = 'tests';
     $stringColumnName = 'test_string';
     $string100ColumnName = 'test_string_100';
     $stringNullableColumnName = 'test_string_nullable';
     $charColumnName = 'test_char';
     $textColumnName = 'test_text';
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $stringColumnName,
         $string100ColumnName,
         $stringNullableColumnName,
@@ -152,7 +149,7 @@ it('generates string validation rules from table schema', function () {
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $this->expect($rules)->toBe([
@@ -164,12 +161,11 @@ it('generates string validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates integer validation rules from table schema', function () {
-    $tableName = 'tests';
     $tinyintColumnName = 'test_tinyint';
     $tinyintUnsignedColumnName = 'test_tinyint_unsigned';
     $smallintColumnName = 'test_smallint';
@@ -182,7 +178,7 @@ it('generates integer validation rules from table schema', function () {
     $bigintUnsignedColumnName = 'test_bigint_unsigned';
     $bigintNullableColumnName = 'test_bigint_nullable';
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $tinyintColumnName,
         $tinyintUnsignedColumnName,
         $smallintColumnName,
@@ -209,7 +205,7 @@ it('generates integer validation rules from table schema', function () {
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $integerTypes = SchemaRulesResolverMySql::$integerTypes;
@@ -229,12 +225,11 @@ it('generates integer validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates numeric validation rules from table schema', function () {
-    $tableName = 'tests';
     $floatColumnName = 'test_float';
     $floatUnsignedColumnName = 'test_float_unsigned';
     $doubleColumnName = 'test_double';
@@ -243,7 +238,7 @@ it('generates numeric validation rules from table schema', function () {
     $decimalUnsignedColumnName = 'test_decimal_unsigned';
     $decimalNullableColumnName = 'test_decimal_nullable';
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $floatColumnName,
         $floatUnsignedColumnName,
         $doubleColumnName,
@@ -262,7 +257,7 @@ it('generates numeric validation rules from table schema', function () {
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $integerTypes = SchemaRulesResolverMySql::$integerTypes;
@@ -278,17 +273,16 @@ it('generates numeric validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates enum and set validation rules from table schema', function () {
-    $tableName = 'tests';
     $enumColumnName = 'test_enum';
     $setColumnName = 'test_set';
     $allowed = ['a', 'b', 'c'];
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $enumColumnName,
         $setColumnName,
         $allowed
@@ -298,7 +292,7 @@ it('generates enum and set validation rules from table schema', function () {
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $this->expect($rules)->toBe([
@@ -307,18 +301,17 @@ it('generates enum and set validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates date validation rules from table schema', function () {
-    $tableName = 'tests';
     $dateColumnName = 'test_date';
     $yearColumnName = 'test_year';
     $timeColumnName = 'test_time';
     $timestampColumnName = 'test_timestamp';
 
-    Schema::create($tableName, function (Blueprint $table) use (
+    Schema::create($this->tableName, function (Blueprint $table) use (
         $dateColumnName,
         $yearColumnName,
         $timeColumnName,
@@ -331,7 +324,7 @@ it('generates date validation rules from table schema', function () {
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $this->expect($rules)->toBe([
@@ -342,21 +335,19 @@ it('generates date validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
 
 it('generates json validation rules from table schema', function () {
-    //TODO as sqlite has no specific json data type we may change the tests to use mysql in github action
-    $tableName = 'tests';
     $jsonColumnName = 'test_json';
 
-    Schema::create($tableName, function (Blueprint $table) use ($jsonColumnName) {
+    Schema::create($this->tableName, function (Blueprint $table) use ($jsonColumnName) {
         $table->json($jsonColumnName);
     });
 
     $rules = app()->make(SchemaRulesResolverInterface::class, [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->generate();
 
     $this->expect($rules)->toBe([
@@ -364,6 +355,6 @@ it('generates json validation rules from table schema', function () {
     ]);
 
     $this->artisan("schema:generate-rules", [
-        'table' => $tableName,
+        'table' => $this->tableName,
     ])->assertSuccessful();
 });
