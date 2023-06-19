@@ -1,6 +1,6 @@
 {
     "name": "laracraft-tech/laravel-schema-rules",
-    "description": "Reflect your database table schema types as Laravel validation rules!",
+    "description": "Automatically generate Laravel validation rules based on your database table schema!",
     "keywords": [
         "laracraft-tech",
         "laravel",
