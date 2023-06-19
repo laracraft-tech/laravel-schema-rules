@@ -95,8 +95,9 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
         $columnRules = [];
         $columnRules[] = $column->Null === "YES" ? 'nullable' : 'required' ;
 
-        if (!empty($column->Foreign)) {
+        if (! empty($column->Foreign)) {
             $columnRules[] = "exists:".implode(',', $column->Foreign);
+
             return $columnRules;
         }
 

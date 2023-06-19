@@ -62,8 +62,9 @@ class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
         $columnRules = [];
         $columnRules[] = $column->notnull ? 'required' : 'nullable' ;
 
-        if (!empty($column->Foreign)) {
+        if (! empty($column->Foreign)) {
             $columnRules[] = "exists:".implode(',', $column->Foreign);
+
             return $columnRules;
         }
 
