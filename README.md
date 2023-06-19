@@ -33,7 +33,7 @@ Schema::create('persons', function (Blueprint $table) {
     $table->string('first_name', 100);
     $table->string('last_name', 100);
     $table->string('email');
-    $table->foreignId('job_id')->constrained();
+    $table->foreignId('address_id')->constrained();
     $table->text('bio')->nullable();
     $table->enum('gender', ['m', 'f', 'd']);
     $table->date('birth');
@@ -60,7 +60,7 @@ Copy & paste these to your controller validation or form request or where ever y
     'first_name' => ['required', 'string', 'min:1', 'max:100'],
     'last_name' => ['required', 'string', 'min:1', 'max:100'],
     'email' => ['required', 'string', 'min:1', 'max:255'],
-    'job_id' => ['required', 'exists:jobs,id'],
+    'address_id' => ['required', 'exists:addresss,id'],
     'bio' => ['nullable', 'string', 'min:1'],
     'gender' => ['required', 'string', 'in:m,f,d'],
     'birth' => ['required', 'date'],
