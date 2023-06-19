@@ -66,13 +66,39 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 
     private function getColumnsDefinitionsFromTable()
     {
-        return DB::select('SHOW COLUMNS FROM '.$this->table);
+        $databaseName = config('database.connections.mysql.database');
+        $tableName = $this->table;
+
+        $tableColumns = collect(DB::select('SHOW COLUMNS FROM ' . $tableName))->keyBy('Field')->toArray();
+
+        $foreignKeys = DB::select("
+            SELECT k.COLUMN_NAME, k.REFERENCED_TABLE_NAME, k.REFERENCED_COLUMN_NAME
+            FROM information_schema.TABLE_CONSTRAINTS i
+            LEFT JOIN information_schema.KEY_COLUMN_USAGE k ON i.CONSTRAINT_NAME = k.CONSTRAINT_NAME
+            WHERE i.CONSTRAINT_TYPE = 'FOREIGN KEY'
+            AND i.TABLE_SCHEMA = '{$databaseName}'
+            AND i.TABLE_NAME = '{$tableName}'
+        ");
+
+        foreach ($foreignKeys as $foreignKey) {
+            $tableColumns[$foreignKey->COLUMN_NAME]->Foreign = [
+                'table' => $foreignKey->REFERENCED_TABLE_NAME,
+                'id' => $foreignKey->REFERENCED_COLUMN_NAME,
+            ];
+        }
+
+        return $tableColumns;
     }
 
     private function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
         $columnRules[] = $column->Null === "YES" ? 'nullable' : 'required' ;
+
+        if (!empty($column->Foreign)) {
+            $columnRules[] = "exists:".implode(',', $column->Foreign);
+            return $columnRules;
+        }
 
         $type = Str::of($column->Type);
         switch (true) {
@@ -92,9 +118,9 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 
                 break;
             case $type->contains('int'):
+                $columnRules[] = "integer";
                 $sign = ($type->contains('unsigned')) ? 'unsigned' : 'signed' ;
                 $intType = $type->before(' unsigned')->__toString();
-                $columnRules[] = "integer";
                 $columnRules[] = "min:".self::$integerTypes[$intType][$sign][0];
                 $columnRules[] = "max:".self::$integerTypes[$intType][$sign][1];
 

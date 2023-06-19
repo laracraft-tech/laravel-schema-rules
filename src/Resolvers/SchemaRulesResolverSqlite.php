@@ -43,13 +43,29 @@ class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
 
     private function getColumnsDefinitionsFromTable()
     {
-        return DB::select('PRAGMA table_info(' . $this->table . ')');
+        $tableColumns = collect(DB::select('PRAGMA table_info(' . $this->table . ')'))->keyBy('name')->toArray();
+
+        $foreignKeys = DB::select("PRAGMA foreign_key_list($this->table)");
+
+        foreach ($foreignKeys as $foreignKey) {
+            $tableColumns[$foreignKey->from]->Foreign = [
+                'table' => $foreignKey->table,
+                'id' => $foreignKey->to,
+            ];
+        }
+
+        return $tableColumns;
     }
 
     private function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
         $columnRules[] = $column->notnull ? 'required' : 'nullable' ;
+
+        if (!empty($column->Foreign)) {
+            $columnRules[] = "exists:".implode(',', $column->Foreign);
+            return $columnRules;
+        }
 
         $type = Str::of($column->type);
         switch (true) {

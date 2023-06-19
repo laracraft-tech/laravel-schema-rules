@@ -10,7 +10,12 @@ use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
 
 beforeEach(function () {
     $this->tableName = 'tests';
+});
+
+afterEach(function () {
+    Schema::disableForeignKeyConstraints();
     Schema::dropIfExists($this->tableName);
+    Schema::enableForeignKeyConstraints();
 });
 
 it('only accepts a table argument', function () {
@@ -357,4 +362,39 @@ it('generates json validation rules from table schema', function () {
     $this->artisan("schema:generate-rules", [
         'table' => $this->tableName,
     ])->assertSuccessful();
+});
+
+it('generates foreign key validation rules from table schema', function () {
+    $foreignKeyColumnName = 'test_id';
+
+    Schema::create($this->tableName, function (Blueprint $table) {
+        $table->id();
+        $table->boolean('test');
+    });
+
+    $foreignTable = 'foo';
+    // make sure the table does not exist
+    Schema::dropIfExists($foreignTable);
+    Schema::create($foreignTable, function (Blueprint $table) use ($foreignKeyColumnName) {
+        $table->id();
+        $table->foreignId($foreignKeyColumnName)->constrained();
+    });
+
+    $rules = app()->make(SchemaRulesResolverInterface::class, [
+        'table' => $foreignTable,
+    ])->generate();
+
+    $constrained = explode('_', $foreignKeyColumnName);
+    $constrained[0] = Str::plural($constrained[0]);
+
+    $this->expect($rules)->toBe([
+        $foreignKeyColumnName => ['required', 'exists:'.implode(',', $constrained)],
+    ]);
+
+    $this->artisan("schema:generate-rules", [
+        'table' => $foreignTable,
+    ])->assertSuccessful();
+
+    // make sure the table gets deleted after the test
+    Schema::dropIfExists($foreignTable);
 });
