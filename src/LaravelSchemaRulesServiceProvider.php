@@ -41,13 +41,13 @@ class LaravelSchemaRulesServiceProvider extends PackageServiceProvider
             switch ($driver) {
                 case 'sqlite': $class = SchemaRulesResolverSqlite::class;
 
-                break;
+                    break;
                 case 'mysql': $class = SchemaRulesResolverMySql::class;
 
-                break;
+                    break;
                 case 'pgsql': $class = SchemaRulesResolverPgSql::class;
 
-                break;
+                    break;
                 default: throw new UnsupportedDbDriverException('This db driver is not supported: '.$driver);
             };
 
