@@ -39,7 +39,8 @@ Schema::create('persons', function (Blueprint $table) {
     $table->year('graduated');
     $table->float('body_size');
     $table->unsignedTinyInteger('children_count')->nullable();
-    $table->integer('net_income');
+    $table->integer('account_balance');
+    $table->unsignedInteger('net_income');
     $table->boolean('send_newsletter')->nullable();
 });
 ````
@@ -64,12 +65,13 @@ Copy & paste these to your controller validation or form request or where ever y
     'graduated' => ['required', 'integer', 'min:1901', 'max:2155'],
     'body_size' => ['required', 'numeric'],
     'children_count' => ['nullable', 'integer', 'min:0', 'max:255'],
-    'net_income' => ['required', 'integer', 'min:-2147483648', 'max:2147483647'],
+    'account_balance' => ['required', 'integer', 'min:-2147483648', 'max:2147483647'],
+    'net_income' => ['required', 'integer', 'min:0', 'max:4294967295'],
     'send_newsletter' => ['nullable', 'boolean']
 ]
 ```
 
-As you may have noticed the float `body_size` column, just gets generated to `['required', 'numeric']`.
+As you may have noticed the float-column `body_size`, just gets generated to `['required', 'numeric']`.
 Proper rules for `float`, `decimal` and `double`, are not yet implemented! 
 
 ### Generate rules for specific columns
