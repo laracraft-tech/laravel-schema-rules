@@ -60,7 +60,7 @@ Copy & paste these to your controller validation or form request or where ever y
     'first_name' => ['required', 'string', 'min:1', 'max:100'],
     'last_name' => ['required', 'string', 'min:1', 'max:100'],
     'email' => ['required', 'string', 'min:1', 'max:255'],
-    'address_id' => ['required', 'exists:addresss,id'],
+    'address_id' => ['required', 'exists:addresses,id'],
     'bio' => ['nullable', 'string', 'min:1'],
     'gender' => ['required', 'string', 'in:m,f,d'],
     'birth' => ['required', 'date'],
