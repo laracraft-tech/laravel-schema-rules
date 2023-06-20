@@ -14,7 +14,7 @@ Use these as a starting point to fine-tune and optimize your validation rules as
 You can install the package via composer:
 
 ```bash
-composer require laracraft-tech/laravel-schema-rules
+composer require laracraft-tech/laravel-schema-rules --dev
 ```
 
 Then publish the config file with:
