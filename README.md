@@ -25,7 +25,7 @@ php artisan vendor:publish --tag="schema-rules-config"
 
 ## ToC
 
-- [`Generate rules for the whole table`](#generate-rules-for-the-whole-table)
+- [`Generate rules for a whole table`](#generate-rules-for-a-whole-table)
 - [`Generate rules for specific columns`](#generate-rules-for-specific-columns)
 - [`Generate Form Request Class`](#generate-form-request-class)
 
@@ -52,7 +52,7 @@ Schema::create('persons', function (Blueprint $table) {
 });
 ````
 
-### Generate rules for the whole table
+### Generate rules for a whole table
 
 Now if you run:
 
