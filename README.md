@@ -93,6 +93,28 @@ Copy & paste these to your controller validation or form request or where ever y
 ]
 ````
 
+### Create Form Request
+
+Optionally, you can add a `--create-request` or `-c` flag,
+which will create a form request class with the generated rules for you!
+
+```` bash
+# creates app/Http/Requests/StorePersonRequest.php (store request is the default)
+php artisan schema:generate-rules persons --create-request 
+
+# creates/overwrites app/Http/Requests/StorePersonRequest.php
+php artisan schema:generate-rules persons --create-request --force
+ 
+# creates app/Http/Requests/UpdatePersonRequest.php
+php artisan schema:generate-rules persons --create-request --file UpdatePersonRequest
+
+# creates app/Http/Requests/Api/V1/StorePersonRequest.php
+php artisan schema:generate-rules persons --create-request --file Api\\V1\\StorePersonRequest
+
+# creates/overwrites app/Http/Requests/Api/V1/StorePersonRequest.php (using shortcuts)
+php artisan schema:generate-rules persons -cf --file Api\\V1\\StorePersonRequest
+````
+
 ## Supported Drivers
 
 Currently, the supported database drivers are `MySQL`, `PostgreSQL`, and `SQLite`.

@@ -10,9 +10,14 @@ use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
 
 beforeEach(function () {
     $this->tableName = 'tests';
+    //realy make sure that the table does not exists before and after a test
+    Schema::disableForeignKeyConstraints();
+    Schema::dropIfExists($this->tableName);
+    Schema::enableForeignKeyConstraints();
 });
 
 afterEach(function () {
+    //realy make sure that the table does not exists before and after a test
     Schema::disableForeignKeyConstraints();
     Schema::dropIfExists($this->tableName);
     Schema::enableForeignKeyConstraints();
