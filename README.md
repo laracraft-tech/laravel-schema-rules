@@ -23,6 +23,12 @@ Then publish the config file with:
 php artisan vendor:publish --tag="schema-rules-config"
 ```
 
+## ToC
+
+- [`Generate rules for the whole table`](#generate-rules-for-the-whole-table)
+- [`Generate rules for specific columns`](#generate-rules-for-specific-columns)
+- [`Generate Form Request Class`](#generate-form-request-class)
+
 ## Usage
 
 Let's say you've migrated this fictional table:
@@ -93,7 +99,7 @@ Copy & paste these to your controller validation or form request or where ever y
 ]
 ````
 
-### Create Form Request
+### Generate Form Request Class
 
 Optionally, you can add a `--create-request` or `-c` flag,
 which will create a form request class with the generated rules for you!
