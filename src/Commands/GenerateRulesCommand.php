@@ -7,14 +7,14 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 use LaracraftTech\LaravelSchemaRules\Exceptions\ColumnDoesNotExistException;
+use LaracraftTech\LaravelSchemaRules\Exceptions\FailedToCreateRequestClassException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\MultipleTablesSuppliedException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\TableDoesNotExistException;
-use LaracraftTech\LaravelSchemaRules\Exceptions\FailedToCreateRequestClassException;
+use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
 
 class GenerateRulesCommand extends Command
 {
@@ -40,8 +40,8 @@ class GenerateRulesCommand extends Command
 
         // Options
         $columns = (array) array_filter(explode(',', $this->option('columns')));
-        $create = (boolean) $this->option('create-request');
-        $force = (boolean) $this->option('force');
+        $create = (bool) $this->option('create-request');
+        $force = (bool) $this->option('force');
         $file = (string) $this->option('file');
 
         $this->checkTableAndColumns($table, $columns);
