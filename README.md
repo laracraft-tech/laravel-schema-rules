@@ -1,10 +1,10 @@
 # Laravel Schema Rules
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/laracraft-tech/laravel-schema-rules.svg?style=flat-square)](https://packagist.org/packages/laracraft-tech/laravel-useful-traits)
-[![Tests](https://github.com/laracraft-tech/laravel-schema-rules/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/laracraft-tech/laravel-useful-traits/actions/workflows/run-tests.yml)
-[![Check & fix styling](https://github.com/laracraft-tech/laravel-schema-rules/actions/workflows/fix-php-code-style-issues.yml/badge.svg?branch=main)](https://github.com/laracraft-tech/laravel-useful-traits/actions/workflows/fix-php-code-style-issues.yml)
-[![License](https://img.shields.io/packagist/l/laracraft-tech/laravel-schema-rules.svg?style=flat-square)](https://packagist.org/packages/laracraft-tech/laravel-useful-traits)
-<!--[![Total Downloads](https://img.shields.io/packagist/dt/laracraft-tech/laravel-schema-rules.svg?style=flat-square)](https://packagist.org/packages/laracraft-tech/laravel-useful-traits)-->
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/laracraft-tech/laravel-schema-rules.svg?style=flat-square)](https://packagist.org/packages/laracraft-tech/laravel-schema-rules)
+[![Tests](https://github.com/laracraft-tech/laravel-schema-rules/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/laracraft-tech/laravel-schema-rules/actions/workflows/run-tests.yml)
+[![Check & fix styling](https://github.com/laracraft-tech/laravel-schema-rules/actions/workflows/fix-php-code-style-issues.yml/badge.svg?branch=main)](https://github.com/laracraft-tech/laravel-schema-rules/actions/workflows/fix-php-code-style-issues.yml)
+[![License](https://img.shields.io/packagist/l/laracraft-tech/laravel-schema-rules.svg?style=flat-square)](https://packagist.org/packages/laracraft-tech/laravel-schema-rules)
+<!--[![Total Downloads](https://img.shields.io/packagist/dt/laracraft-tech/laravel-schema-rules.svg?style=flat-square)](https://packagist.org/packages/laracraft-tech/laravel-schema-rules)-->
 
 Automatically generate basic Laravel validation rules based on your database table schema!
 Use these as a starting point to fine-tune and optimize your validation rules as needed. 
