@@ -429,5 +429,5 @@ it('skips column if in config', function () {
     $this->artisan("schema:generate-rules", [
         'table' => $this->tableName,
     ])->assertSuccessful();
-    
+
 });
