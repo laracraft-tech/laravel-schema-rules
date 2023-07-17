@@ -38,7 +38,7 @@ class SchemaRulesResolverMySql extends AbstractSchemaRulesResolver implements Sc
         ],
     ];
 
-    private function getColumnsDefinitionsFromTable()
+    protected function getColumnsDefinitionsFromTable()
     {
         $databaseName = config('database.connections.mysql.database');
         $tableName = $this->table;
@@ -64,7 +64,7 @@ class SchemaRulesResolverMySql extends AbstractSchemaRulesResolver implements Sc
         return $tableColumns;
     }
 
-    private function generateColumnRules(stdClass $column): array
+    protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
         $columnRules[] = $column->Null === "YES" ? 'nullable' : 'required' ;

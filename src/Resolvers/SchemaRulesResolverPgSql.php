@@ -18,7 +18,7 @@ class SchemaRulesResolverPgSql extends AbstractSchemaRulesResolver implements Sc
         'bigint' => ['-9223372036854775808', '9223372036854775807'],
     ];
 
-    private function getColumnsDefinitionsFromTable()
+    protected function getColumnsDefinitionsFromTable()
     {
         $databaseName = config('database.connections.mysql.database');
         $tableName = $this->table;
@@ -57,7 +57,7 @@ class SchemaRulesResolverPgSql extends AbstractSchemaRulesResolver implements Sc
         return $tableColumns;
     }
 
-    private function generateColumnRules(stdClass $column): array
+    protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
         $columnRules[] = $column->is_nullable === "YES" ? 'nullable' : 'required' ;

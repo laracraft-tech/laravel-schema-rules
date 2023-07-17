@@ -60,12 +60,12 @@ class AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
         return $this->columns;
     }
 
-    private function getColumnsDefinitionsFromTable()
+    protected function getColumnsDefinitionsFromTable()
     {
         throw new \BadMethodCallException("Method not implemented in concrete class");
     }
 
-    private function generateColumnRules(stdClass $column): array
+    protected function generateColumnRules(stdClass $column): array
     {
         throw new \BadMethodCallException("Method not implemented in concrete class");
     }

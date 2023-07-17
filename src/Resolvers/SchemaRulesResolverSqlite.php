@@ -10,7 +10,7 @@ use stdClass;
 class SchemaRulesResolverSqlite extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
 {
 
-    private function getColumnsDefinitionsFromTable()
+    protected function getColumnsDefinitionsFromTable()
     {
 
         $tableColumns = collect(DB::select("PRAGMA table_info('{$this->table()}')"))->keyBy('name')->toArray();
@@ -27,7 +27,7 @@ class SchemaRulesResolverSqlite extends AbstractSchemaRulesResolver implements S
         return $tableColumns;
     }
 
-    private function generateColumnRules(stdClass $column): array
+    protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
         $columnRules[] = $column->notnull ? 'required' : 'nullable' ;
