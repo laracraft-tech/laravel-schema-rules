@@ -412,7 +412,7 @@ it('skips column if in config', function () {
 
     Schema::create($this->tableName, function (Blueprint $table) use (
         $stringColumnName,
-        $skippedColumn
+        $skippedColumn,
     ) {
         $table->string($stringColumnName);
         $table->string($skippedColumn);
