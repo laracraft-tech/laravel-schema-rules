@@ -9,8 +9,6 @@ use stdClass;
 
 class SchemaRulesResolverPgSql extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-    private string $table;
-    private array $columns;
 
     public static array $integerTypes = [
         'smallint' => ['-32768', '32767'],
@@ -21,7 +19,7 @@ class SchemaRulesResolverPgSql extends AbstractSchemaRulesResolver implements Sc
     protected function getColumnsDefinitionsFromTable()
     {
         $databaseName = config('database.connections.mysql.database');
-        $tableName = $this->table;
+        $tableName = $this->table();
 
         $tableColumns = collect(DB::select(
             "

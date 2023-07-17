@@ -10,11 +10,6 @@ use stdClass;
 class SchemaRulesResolverMySql extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
 {
 
-    private array $default_skippable_columns = ['created_at', 'updated_at', 'deleted_at'];
-
-    private string $table;
-    private array $columns;
-
     public static array $integerTypes = [
         'tinyint' => [
             'unsigned' => ['0', '255'],
@@ -41,7 +36,7 @@ class SchemaRulesResolverMySql extends AbstractSchemaRulesResolver implements Sc
     protected function getColumnsDefinitionsFromTable()
     {
         $databaseName = config('database.connections.mysql.database');
-        $tableName = $this->table;
+        $tableName = $this->table();
 
         $tableColumns = collect(DB::select('SHOW COLUMNS FROM ' . $tableName))->keyBy('Field')->toArray();
 

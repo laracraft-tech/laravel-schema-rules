@@ -35,7 +35,7 @@ class AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
             }
 
             // If column should be skipped
-            if (in_array($column, $skip_columns)) {
+            if (in_array($field, $skip_columns)) {
                 continue;
             }
 
