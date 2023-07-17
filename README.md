@@ -121,6 +121,15 @@ php artisan schema:generate-rules persons --create-request --file Api\\V1\\Store
 php artisan schema:generate-rules persons -cf --file Api\\V1\\StorePersonRequest
 ````
 
+### Always skip columns
+
+To always skip columns add it in the config file, under `skip_columns` parameter.
+
+```php
+'skip_columns' => ['created_at', 'updated_at', 'deleted_at', 'whatever'],
+```
+
+
 ## Supported Drivers
 
 Currently, the supported database drivers are `MySQL`, `PostgreSQL`, and `SQLite`.

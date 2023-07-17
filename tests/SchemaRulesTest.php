@@ -403,3 +403,31 @@ it('generates foreign key validation rules from table schema', function () {
     // make sure the table gets deleted after the test
     Schema::dropIfExists($foreignTable);
 });
+
+it('skips column if in config', function () {
+    $stringColumnName = 'test_column';
+    $skippedColumn = 'to_be_skipped';
+
+    config(['schema-rules.skip_columns' => ['to_be_skipped']]);
+
+    Schema::create($this->tableName, function (Blueprint $table) use (
+        $stringColumnName,
+        $skippedColumn
+    ) {
+        $table->string($stringColumnName);
+        $table->string($skippedColumn);
+    });
+
+    $rules = app()->make(SchemaRulesResolverInterface::class, [
+        'table' => $this->tableName,
+    ])->generate();
+
+    $this->expect($rules)->toBe([
+        $stringColumnName => ['required', 'string', 'min:1', 'max:255'],
+    ]);
+
+    $this->artisan("schema:generate-rules", [
+        'table' => $this->tableName,
+    ])->assertSuccessful();
+    
+});

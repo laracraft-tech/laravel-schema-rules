@@ -44,12 +44,19 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
     {
         $tableColumns = $this->getColumnsDefinitionsFromTable();
 
+        $skip_columns = config('schema-rules.skip_columns');
+
         $tableRules = [];
         foreach ($tableColumns as $column) {
             $field = $column->Field;
 
             // If specific columns where supplied only process those...
             if (! empty($this->columns) && ! in_array($field, $this->columns)) {
+                continue;
+            }
+
+            // If column should be skipped
+            if (in_array($column, $skip_columns)) {
                 continue;
             }
 
@@ -60,7 +67,7 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 
             $tableRules[$field] = $this->generateColumnRules($column);
         }
-        //dd($tableColumns);
+
         return $tableRules;
     }
 
