@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use LaracraftTech\LaravelSchemaRules\Exceptions\ColumnDoesNotExistException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\MultipleTablesSuppliedException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\TableDoesNotExistException;
-use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverInterface;
+use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
 
 beforeEach(function () {

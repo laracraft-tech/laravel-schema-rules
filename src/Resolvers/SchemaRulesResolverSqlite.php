@@ -4,55 +4,18 @@ namespace LaracraftTech\LaravelSchemaRules\Resolvers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class SchemaRulesResolverSqlite implements SchemaRulesResolverInterface
+class SchemaRulesResolverSqlite extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-    private string $table;
-    private array $columns;
-
-    public function __construct(string $table, array $columns = [])
-    {
-        $this->table = $table;
-        $this->columns = $columns;
-    }
-
-    public function generate(): array
-    {
-        $tableColumns = $this->getColumnsDefinitionsFromTable();
-
-        $skip_columns = config('schema-rules.skip_columns');
-
-        $tableRules = [];
-        foreach ($tableColumns as $column) {
-            $field = $column->name;
-
-            // If specific columns where supplied only process those...
-            if (! empty($this->columns) && ! in_array($field, $this->columns)) {
-                continue;
-            }
-
-            // If column should be skipped
-            if (in_array($column, $skip_columns)) {
-                continue;
-            }
-
-            // We do not need a rule for auto increments
-            if ($column->pk) {
-                continue;
-            }
-
-            $tableRules[$field] = $this->generateColumnRules($column);
-        }
-        //dd($tableColumns);
-        return $tableRules;
-    }
 
     private function getColumnsDefinitionsFromTable()
     {
-        $tableColumns = collect(DB::select('PRAGMA table_info(' . $this->table . ')'))->keyBy('name')->toArray();
 
-        $foreignKeys = DB::select("PRAGMA foreign_key_list($this->table)");
+        $tableColumns = collect(DB::select("PRAGMA table_info('{$this->table()}')"))->keyBy('name')->toArray();
+
+        $foreignKeys = DB::select("PRAGMA foreign_key_list({$this->table()})");
 
         foreach ($foreignKeys as $foreignKey) {
             $tableColumns[$foreignKey->from]->Foreign = [

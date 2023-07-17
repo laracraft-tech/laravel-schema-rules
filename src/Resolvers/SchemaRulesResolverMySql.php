@@ -4,10 +4,14 @@ namespace LaracraftTech\LaravelSchemaRules\Resolvers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
+class SchemaRulesResolverMySql extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
 {
+
+    private array $default_skippable_columns = ['created_at', 'updated_at', 'deleted_at'];
+
     private string $table;
     private array $columns;
 
@@ -33,43 +37,6 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
             'signed' => ['-9223372036854775808', '9223372036854775807'],
         ],
     ];
-
-    public function __construct(string $table, array $columns = [])
-    {
-        $this->table = $table;
-        $this->columns = $columns;
-    }
-
-    public function generate(): array
-    {
-        $tableColumns = $this->getColumnsDefinitionsFromTable();
-
-        $skip_columns = config('schema-rules.skip_columns');
-
-        $tableRules = [];
-        foreach ($tableColumns as $column) {
-            $field = $column->Field;
-
-            // If specific columns where supplied only process those...
-            if (! empty($this->columns) && ! in_array($field, $this->columns)) {
-                continue;
-            }
-
-            // If column should be skipped
-            if (in_array($column, $skip_columns)) {
-                continue;
-            }
-
-            // We do not need a rule for auto increments
-            if ($column->Extra === 'auto_increment') {
-                continue;
-            }
-
-            $tableRules[$field] = $this->generateColumnRules($column);
-        }
-
-        return $tableRules;
-    }
 
     private function getColumnsDefinitionsFromTable()
     {

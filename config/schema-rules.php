@@ -16,7 +16,7 @@ return [
     'string_min_length' => env('SCHEMA_RULES_STRING_MIN_LENGTH', 1),
 
     /**
-     * Always skip this columns (usefule for created_at, updated_at, deleted_at)
+     * Always skip this columns (created_at, updated_at, deleted_at are defaulted)
      */
     'skip_columns' => []
     

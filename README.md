@@ -126,7 +126,7 @@ php artisan schema:generate-rules persons -cf --file Api\\V1\\StorePersonRequest
 To always skip columns add it in the config file, under `skip_columns` parameter.
 
 ```php
-'skip_columns' => ['created_at', 'updated_at', 'deleted_at', 'whatever'],
+'skip_columns' => ['whatever', 'some_other_column'],
 ```
 
 

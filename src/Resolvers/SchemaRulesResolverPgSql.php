@@ -4,9 +4,10 @@ namespace LaracraftTech\LaravelSchemaRules\Resolvers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
+class SchemaRulesResolverPgSql extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
 {
     private string $table;
     private array $columns;
@@ -16,43 +17,6 @@ class SchemaRulesResolverPgSql implements SchemaRulesResolverInterface
         'integer' => ['-2147483648', '2147483647'],
         'bigint' => ['-9223372036854775808', '9223372036854775807'],
     ];
-
-    public function __construct(string $table, array $columns = [])
-    {
-        $this->table = $table;
-        $this->columns = $columns;
-    }
-
-    public function generate(): array
-    {
-        $tableColumns = $this->getColumnsDefinitionsFromTable();
-
-        $skip_columns = config('schema-rules.skip_columns');
-
-        $tableRules = [];
-        foreach ($tableColumns as $column) {
-            $field = $column->column_name;
-
-            // If specific columns where supplied only process those...
-            if (! empty($this->columns) && ! in_array($field, $this->columns)) {
-                continue;
-            }
-
-            // If column should be skipped
-            if (in_array($column, $skip_columns)) {
-                continue;
-            }
-
-            // We do not need a rule for auto increments
-            if (Str::contains($column->column_default, 'nextval')) {
-                continue;
-            }
-
-            $tableRules[$field] = $this->generateColumnRules($column);
-        }
-
-        return $tableRules;
-    }
 
     private function getColumnsDefinitionsFromTable()
     {
