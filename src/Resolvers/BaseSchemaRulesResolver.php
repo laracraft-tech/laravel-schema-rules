@@ -5,10 +5,8 @@ namespace LaracraftTech\LaravelSchemaRules\Resolvers;
 use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
+abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-
-    private array $default_skippable_columns = ['created_at', 'updated_at', 'deleted_at'];
 
     private string $table;
     private array $columns;
@@ -23,7 +21,7 @@ class AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
     {
         $tableColumns = $this->getColumnsDefinitionsFromTable();
 
-        $skip_columns = array_merge($this->default_skippable_columns, config('schema-rules.skip_columns'));
+        $skip_columns = config('schema-rules.skip_columns');
 
         $tableRules = [];
         foreach ($tableColumns as $column) {
@@ -60,13 +58,8 @@ class AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
         return $this->columns;
     }
 
-    protected function getColumnsDefinitionsFromTable()
-    {
-        throw new \BadMethodCallException("Method not implemented in concrete class");
-    }
+    abstract protected function getColumnsDefinitionsFromTable();
 
-    protected function generateColumnRules(stdClass $column): array
-    {
-        throw new \BadMethodCallException("Method not implemented in concrete class");
-    }
+    abstract protected function generateColumnRules(stdClass $column): array;
+
 }

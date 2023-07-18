@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class SchemaRulesResolverSqlite extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
+class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
 
     protected function getColumnsDefinitionsFromTable()

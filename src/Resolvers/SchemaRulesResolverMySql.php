@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class SchemaRulesResolverMySql extends AbstractSchemaRulesResolver implements SchemaRulesResolverInterface
+class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
 
     public static array $integerTypes = [
