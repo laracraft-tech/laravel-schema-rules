@@ -2,6 +2,17 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.0 - 2023-07-19
+
+### What's Changed
+
+- Added `skip_columns` in config (default skip `deleted_at`, `updated_at` and `created_at`) by @giagara
+- Some refactoring by @giagara
+
+### New Contributors
+
+- @giagara made their first contribution
+
 ## v1.2.0 - 2023-06-21
 
 ### What's Changed
