@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use LaracraftTech\LaravelSchemaRules\Exceptions\ColumnDoesNotExistException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\FailedToCreateRequestClassException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\MultipleTablesSuppliedException;
 use LaracraftTech\LaravelSchemaRules\Exceptions\TableDoesNotExistException;
-use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 
 class GenerateRulesCommand extends Command
 {

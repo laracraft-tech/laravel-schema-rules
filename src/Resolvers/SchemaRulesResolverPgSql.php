@@ -9,7 +9,6 @@ use stdClass;
 
 class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-
     public static array $integerTypes = [
         'smallint' => ['-32768', '32767'],
         'integer' => ['-2147483648', '2147483647'],
@@ -120,14 +119,13 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
         return $columnRules;
     }
 
-    protected function isAutoIncrement($column) : bool
+    protected function isAutoIncrement($column): bool
     {
         return Str::contains($column->column_default, 'nextval');
     }
 
-    protected function getField($column) : string
+    protected function getField($column): string
     {
         return $column->column_name;
     }
-
 }

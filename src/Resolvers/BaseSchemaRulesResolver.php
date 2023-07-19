@@ -7,7 +7,6 @@ use stdClass;
 
 abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-
     private string $table;
     private array $columns;
 
@@ -58,12 +57,11 @@ abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
         return $this->columns;
     }
 
-    abstract protected function isAutoIncrement($column) : bool;
+    abstract protected function isAutoIncrement($column): bool;
 
-    abstract protected function getField($column) : string;
+    abstract protected function getField($column): string;
 
     abstract protected function getColumnsDefinitionsFromTable();
 
     abstract protected function generateColumnRules(stdClass $column): array;
-
 }

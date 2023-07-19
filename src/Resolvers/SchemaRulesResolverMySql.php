@@ -9,7 +9,6 @@ use stdClass;
 
 class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-
     public static array $integerTypes = [
         'tinyint' => [
             'unsigned' => ['0', '255'],
@@ -140,14 +139,13 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
         return $columnRules;
     }
 
-    protected function isAutoIncrement($column) : bool
+    protected function isAutoIncrement($column): bool
     {
         return $column->Extra === 'auto_increment';
     }
 
-    protected function getField($column) : string
+    protected function getField($column): string
     {
         return $column->Field;
     }
-
 }

@@ -3,8 +3,8 @@
 namespace LaracraftTech\LaravelSchemaRules;
 
 use LaracraftTech\LaravelSchemaRules\Commands\GenerateRulesCommand;
-use LaracraftTech\LaravelSchemaRules\Exceptions\UnsupportedDbDriverException;
 use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
+use LaracraftTech\LaravelSchemaRules\Exceptions\UnsupportedDbDriverException;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverMySql;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverPgSql;
 use LaracraftTech\LaravelSchemaRules\Resolvers\SchemaRulesResolverSqlite;

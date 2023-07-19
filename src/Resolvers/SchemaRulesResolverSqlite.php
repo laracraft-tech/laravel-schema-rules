@@ -9,7 +9,6 @@ use stdClass;
 
 class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-
     protected function getColumnsDefinitionsFromTable()
     {
 
@@ -73,12 +72,12 @@ class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements Schem
         return $columnRules;
     }
 
-    protected function isAutoIncrement($column) : bool
+    protected function isAutoIncrement($column): bool
     {
         return $column->pk;
     }
 
-    protected function getField($column) : string
+    protected function getField($column): string
     {
         return $column->name;
     }
