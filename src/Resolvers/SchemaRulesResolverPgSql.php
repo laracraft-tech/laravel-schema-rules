@@ -119,4 +119,15 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
 
         return $columnRules;
     }
+
+    protected function isAutoIncrement($column) : bool
+    {
+        return Str::contains($column->column_default, 'nextval');
+    }
+
+    protected function getField($column) : string
+    {
+        return $column->column_name;
+    }
+
 }

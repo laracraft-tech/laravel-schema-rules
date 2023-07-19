@@ -72,4 +72,14 @@ class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements Schem
 
         return $columnRules;
     }
+
+    protected function isAutoIncrement($column) : bool
+    {
+        return $column->pk;
+    }
+
+    protected function getField($column) : string
+    {
+        return $column->name;
+    }
 }

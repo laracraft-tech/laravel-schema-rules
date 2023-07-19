@@ -139,4 +139,15 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
 
         return $columnRules;
     }
+
+    protected function isAutoIncrement($column) : bool
+    {
+        return $column->Extra === 'auto_increment';
+    }
+
+    protected function getField($column) : string
+    {
+        return $column->Field;
+    }
+
 }

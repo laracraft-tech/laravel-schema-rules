@@ -25,7 +25,7 @@ abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 
         $tableRules = [];
         foreach ($tableColumns as $column) {
-            $field = $column->Field;
+            $field = $this->getField($column);
 
             // If specific columns where supplied only process those...
             if (! empty($this->columns()) && ! in_array($field, $this->columns())) {
@@ -38,7 +38,7 @@ abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
             }
 
             // We do not need a rule for auto increments
-            if ($column->Extra === 'auto_increment') {
+            if ($this->isAutoIncrement($column)) {
                 continue;
             }
 
@@ -57,6 +57,10 @@ abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
     {
         return $this->columns;
     }
+
+    abstract protected function isAutoIncrement($column) : bool;
+
+    abstract protected function getField($column) : string;
 
     abstract protected function getColumnsDefinitionsFromTable();
 
