@@ -4,12 +4,11 @@ namespace LaracraftTech\LaravelSchemaRules\Resolvers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use LaracraftTech\LaravelSchemaRules\Contracts\SchemaRulesResolverInterface;
 use stdClass;
 
-class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
+class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
-    private string $table;
-    private array $columns;
 
     public static array $integerTypes = [
         'tinyint' => [
@@ -34,47 +33,10 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
         ],
     ];
 
-    public function __construct(string $table, array $columns = [])
-    {
-        $this->table = $table;
-        $this->columns = $columns;
-    }
-
-    public function generate(): array
-    {
-        $tableColumns = $this->getColumnsDefinitionsFromTable();
-
-        $skip_columns = config('schema-rules.skip_columns');
-
-        $tableRules = [];
-        foreach ($tableColumns as $column) {
-            $field = $column->Field;
-
-            // If specific columns where supplied only process those...
-            if (! empty($this->columns) && ! in_array($field, $this->columns)) {
-                continue;
-            }
-
-            // If column should be skipped
-            if (in_array($column, $skip_columns)) {
-                continue;
-            }
-
-            // We do not need a rule for auto increments
-            if ($column->Extra === 'auto_increment') {
-                continue;
-            }
-
-            $tableRules[$field] = $this->generateColumnRules($column);
-        }
-
-        return $tableRules;
-    }
-
-    private function getColumnsDefinitionsFromTable()
+    protected function getColumnsDefinitionsFromTable()
     {
         $databaseName = config('database.connections.mysql.database');
-        $tableName = $this->table;
+        $tableName = $this->table();
 
         $tableColumns = collect(DB::select('SHOW COLUMNS FROM ' . $tableName))->keyBy('Field')->toArray();
 
@@ -97,7 +59,7 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
         return $tableColumns;
     }
 
-    private function generateColumnRules(stdClass $column): array
+    protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
         $columnRules[] = $column->Null === "YES" ? 'nullable' : 'required' ;
@@ -177,4 +139,15 @@ class SchemaRulesResolverMySql implements SchemaRulesResolverInterface
 
         return $columnRules;
     }
+
+    protected function isAutoIncrement($column) : bool
+    {
+        return $column->Extra === 'auto_increment';
+    }
+
+    protected function getField($column) : string
+    {
+        return $column->Field;
+    }
+
 }

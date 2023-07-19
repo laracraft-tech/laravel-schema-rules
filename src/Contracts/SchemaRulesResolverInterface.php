@@ -1,6 +1,6 @@
 <?php
 
-namespace LaracraftTech\LaravelSchemaRules\Resolvers;
+namespace LaracraftTech\LaravelSchemaRules\Contracts;
 
 interface SchemaRulesResolverInterface
 {
