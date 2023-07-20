@@ -90,6 +90,12 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
                 $columnRules[] = "integer";
                 $sign = ($type->contains('unsigned')) ? 'unsigned' : 'signed' ;
                 $intType = $type->before(' unsigned')->__toString();
+
+                // prevent int(xx) for mysql
+                if(!array_key_exists($intType, self::$integerTypes)){
+                    $intType = "int";
+                }
+
                 $columnRules[] = "min:".self::$integerTypes[$intType][$sign][0];
                 $columnRules[] = "max:".self::$integerTypes[$intType][$sign][1];
 
