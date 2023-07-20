@@ -94,7 +94,7 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
                 // prevent int(xx) for mysql
                 $intType = preg_replace("/\([^)]+\)/", "", $intType);
 
-                if(!array_key_exists($intType, self::$integerTypes)){
+                if(! array_key_exists($intType, self::$integerTypes)) {
                     $intType = "int";
                 }
 
