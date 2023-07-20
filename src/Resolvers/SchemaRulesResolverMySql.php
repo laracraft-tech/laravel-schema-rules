@@ -92,6 +92,8 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
                 $intType = $type->before(' unsigned')->__toString();
 
                 // prevent int(xx) for mysql
+                $intType = preg_replace("/\([^)]+\)/", "", $intType);
+
                 if(!array_key_exists($intType, self::$integerTypes)){
                     $intType = "int";
                 }
@@ -115,7 +117,7 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
                 $columnRules[] = 'in:'.implode(',', $matches[1]);
 
                 break;
-            case $type == 'year':
+            case $type->contains('year'):
                 $columnRules[] = 'integer';
                 $columnRules[] = 'min:1901';
                 $columnRules[] = 'max:2155';
