@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.1 - 2023-07-20
+
+### What's Changed
+
+- Fixed bug on `mysql` 5.8 by @giagara
+
 ## v1.3.0 - 2023-07-19
 
 ### What's Changed
