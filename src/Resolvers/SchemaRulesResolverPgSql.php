@@ -107,7 +107,7 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
                 $columnRules[] = 'date';
 
                 break;
-            case $type == 'json':
+            case $type->contains('json'):
                 $columnRules[] = 'json';
 
                 break;
