@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.2 - 2023-08-21
+
+### What's Changed
+
+- Added support for jsonb on PostgreSQL by @mathieutu
+
 ## v1.3.1 - 2023-07-20
 
 ### What's Changed
