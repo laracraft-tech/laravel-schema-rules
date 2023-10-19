@@ -19,5 +19,5 @@ return [
      * Always skip this columns
      */
     'skip_columns' => ['created_at', 'updated_at', 'deleted_at'],
-    
+
 ];

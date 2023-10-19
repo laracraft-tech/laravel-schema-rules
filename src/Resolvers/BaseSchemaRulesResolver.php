@@ -8,6 +8,7 @@ use stdClass;
 abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
 {
     private string $table;
+
     private array $columns;
 
     public function __construct(string $table, array $columns = [])

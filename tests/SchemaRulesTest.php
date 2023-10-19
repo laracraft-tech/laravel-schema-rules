@@ -30,7 +30,7 @@ it('only accepts a table argument', function () {
 
     $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'foo' => $this->tableName,
     ]);
 });
@@ -42,7 +42,7 @@ it('only accepts a --columns option', function () {
 
     $this->expectException(\Symfony\Component\Console\Exception\InvalidOptionException::class);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
         '--foo' => 'test_bool',
     ]);
@@ -55,7 +55,7 @@ it('only handles existing tables', function () {
 
     $this->expectException(TableDoesNotExistException::class);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName.'1',
     ]);
 });
@@ -67,7 +67,7 @@ it('only handles one table at a time', function () {
 
     $this->expectException(MultipleTablesSuppliedException::class);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName.',tests2',
     ]);
 });
@@ -79,7 +79,7 @@ it('only handles existing table columns if supplied ', function () {
 
     $this->expectException(ColumnDoesNotExistException::class);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
         '--columns' => 'foo',
     ]);
@@ -106,7 +106,7 @@ it('generates required and null validation rules from table schema', function ()
         $stringNullableColumnName => ['nullable', 'string', 'min:1', 'max:255'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -132,7 +132,7 @@ it('generates boolean validation rules from table schema', function () {
         $boolNullableColumnName => ['nullable', 'boolean'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -170,7 +170,7 @@ it('generates string validation rules from table schema', function () {
         $textColumnName => ['required', 'string', 'min:1'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -234,7 +234,7 @@ it('generates integer validation rules from table schema', function () {
         $bigintNullableColumnName => ['nullable', 'integer', 'min:'.$integerTypes['bigint']['signed'][0], 'max:'.$integerTypes['bigint']['signed'][1]],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -282,7 +282,7 @@ it('generates numeric validation rules from table schema', function () {
         $decimalNullableColumnName => ['nullable', 'numeric'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -310,7 +310,7 @@ it('generates enum and set validation rules from table schema', function () {
         $setColumnName => ['required', 'string', 'in:'.implode(',', $allowed)],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -344,7 +344,7 @@ it('generates date validation rules from table schema', function () {
         $timestampColumnName => ['required', 'date', 'after_or_equal:1970-01-01 00:00:01', 'before_or_equal:2038-01-19 03:14:07'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -364,7 +364,7 @@ it('generates json validation rules from table schema', function () {
         $jsonColumnName => ['required', 'json'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 });
@@ -396,7 +396,7 @@ it('generates foreign key validation rules from table schema', function () {
         $foreignKeyColumnName => ['required', 'exists:'.implode(',', $constrained)],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $foreignTable,
     ])->assertSuccessful();
 
@@ -426,7 +426,7 @@ it('skips column if in config', function () {
         $stringColumnName => ['required', 'string', 'min:1', 'max:255'],
     ]);
 
-    $this->artisan("schema:generate-rules", [
+    $this->artisan('schema:generate-rules', [
         'table' => $this->tableName,
     ])->assertSuccessful();
 

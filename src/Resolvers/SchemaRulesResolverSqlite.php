@@ -29,10 +29,10 @@ class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements Schem
     protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
-        $columnRules[] = $column->notnull ? 'required' : 'nullable' ;
+        $columnRules[] = $column->notnull ? 'required' : 'nullable';
 
         if (! empty($column->Foreign)) {
-            $columnRules[] = "exists:".implode(',', $column->Foreign);
+            $columnRules[] = 'exists:'.implode(',', $column->Foreign);
 
             return $columnRules;
         }
@@ -40,24 +40,24 @@ class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements Schem
         $type = Str::of($column->type);
         switch (true) {
             case $type == 'tinyint(1)' && config('schema-rules.tinyint1_to_bool'):
-                $columnRules[] = "boolean";
+                $columnRules[] = 'boolean';
 
                 break;
             case $type == 'varchar' || $type == 'text':
-                $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.min_string');
+                $columnRules[] = 'string';
+                $columnRules[] = 'min:'.config('schema-rules.min_string');
 
                 break;
             case $type == 'integer':
-                $columnRules[] = "integer";
-                $columnRules[] = "min:-9223372036854775808";
-                $columnRules[] = "max:9223372036854775807";
+                $columnRules[] = 'integer';
+                $columnRules[] = 'min:-9223372036854775808';
+                $columnRules[] = 'max:9223372036854775807';
 
                 break;
             case $type->contains('numeric') || $type->contains('float'):
                 // should we do more specific here?
                 // some kind of regex validation for double, double unsigned, double(8, 2), decimal etc...?
-                $columnRules[] = "numeric";
+                $columnRules[] = 'numeric';
 
                 break;
             case $type == 'date' || $type == 'time' || $type == 'datetime':

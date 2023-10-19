@@ -21,10 +21,10 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
         $tableName = $this->table();
 
         $tableColumns = collect(DB::select(
-            "
+            '
             SELECT column_name, data_type, character_maximum_length, is_nullable, column_default
                 FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE table_name = :table",
+            WHERE table_name = :table',
             ['table' => $tableName]
         ))->keyBy('column_name')->toArray();
 
@@ -57,10 +57,10 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
     protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
-        $columnRules[] = $column->is_nullable === "YES" ? 'nullable' : 'required' ;
+        $columnRules[] = $column->is_nullable === 'YES' ? 'nullable' : 'required';
 
         if (! empty($column->Foreign)) {
-            $columnRules[] = "exists:".implode(',', $column->Foreign);
+            $columnRules[] = 'exists:'.implode(',', $column->Foreign);
 
             return $columnRules;
         }
@@ -68,24 +68,24 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
         $type = Str::of($column->data_type);
         switch (true) {
             case $type == 'boolean':
-                $columnRules[] = "boolean";
+                $columnRules[] = 'boolean';
 
                 break;
             case $type->contains('char'):
-                $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.string_min_length');
-                $columnRules[] = "max:".$column->character_maximum_length;
+                $columnRules[] = 'string';
+                $columnRules[] = 'min:'.config('schema-rules.string_min_length');
+                $columnRules[] = 'max:'.$column->character_maximum_length;
 
                 break;
             case $type == 'text':
-                $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.string_min_length');
+                $columnRules[] = 'string';
+                $columnRules[] = 'min:'.config('schema-rules.string_min_length');
 
                 break;
             case $type->contains('int'):
-                $columnRules[] = "integer";
-                $columnRules[] = "min:" . self::$integerTypes[$type->__toString()][0];
-                $columnRules[] = "max:" . self::$integerTypes[$type->__toString()][1];
+                $columnRules[] = 'integer';
+                $columnRules[] = 'min:'.self::$integerTypes[$type->__toString()][0];
+                $columnRules[] = 'max:'.self::$integerTypes[$type->__toString()][1];
 
                 break;
             case $type->contains('double') ||
@@ -94,7 +94,7 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
             $type->contains('real'):
                 // should we do more specific here?
                 // some kind of regex validation for double, double unsigned, double(8, 2), decimal etc...?
-                $columnRules[] = "numeric";
+                $columnRules[] = 'numeric';
 
                 break;
                 // unfortunately, it's not so easy in pgsql to find out if a column is an enum

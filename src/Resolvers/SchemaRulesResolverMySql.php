@@ -37,7 +37,7 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
         $databaseName = config('database.connections.mysql.database');
         $tableName = $this->table();
 
-        $tableColumns = collect(DB::select('SHOW COLUMNS FROM ' . $tableName))->keyBy('Field')->toArray();
+        $tableColumns = collect(DB::select('SHOW COLUMNS FROM '.$tableName))->keyBy('Field')->toArray();
 
         $foreignKeys = DB::select("
             SELECT k.COLUMN_NAME, k.REFERENCED_TABLE_NAME, k.REFERENCED_COLUMN_NAME
@@ -61,10 +61,10 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
     protected function generateColumnRules(stdClass $column): array
     {
         $columnRules = [];
-        $columnRules[] = $column->Null === "YES" ? 'nullable' : 'required' ;
+        $columnRules[] = $column->Null === 'YES' ? 'nullable' : 'required';
 
         if (! empty($column->Foreign)) {
-            $columnRules[] = "exists:".implode(',', $column->Foreign);
+            $columnRules[] = 'exists:'.implode(',', $column->Foreign);
 
             return $columnRules;
         }
@@ -72,34 +72,34 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
         $type = Str::of($column->Type);
         switch (true) {
             case $type == 'tinyint(1)' && config('schema-rules.tinyint1_to_bool'):
-                $columnRules[] = "boolean";
+                $columnRules[] = 'boolean';
 
                 break;
             case $type->contains('char'):
-                $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.string_min_length');
-                $columnRules[] = "max:".filter_var($type, FILTER_SANITIZE_NUMBER_INT);
+                $columnRules[] = 'string';
+                $columnRules[] = 'min:'.config('schema-rules.string_min_length');
+                $columnRules[] = 'max:'.filter_var($type, FILTER_SANITIZE_NUMBER_INT);
 
                 break;
             case $type == 'text':
-                $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.string_min_length');
+                $columnRules[] = 'string';
+                $columnRules[] = 'min:'.config('schema-rules.string_min_length');
 
                 break;
             case $type->contains('int'):
-                $columnRules[] = "integer";
-                $sign = ($type->contains('unsigned')) ? 'unsigned' : 'signed' ;
+                $columnRules[] = 'integer';
+                $sign = ($type->contains('unsigned')) ? 'unsigned' : 'signed';
                 $intType = $type->before(' unsigned')->__toString();
 
                 // prevent int(xx) for mysql
-                $intType = preg_replace("/\([^)]+\)/", "", $intType);
+                $intType = preg_replace("/\([^)]+\)/", '', $intType);
 
-                if(! array_key_exists($intType, self::$integerTypes)) {
-                    $intType = "int";
+                if (! array_key_exists($intType, self::$integerTypes)) {
+                    $intType = 'int';
                 }
 
-                $columnRules[] = "min:".self::$integerTypes[$intType][$sign][0];
-                $columnRules[] = "max:".self::$integerTypes[$intType][$sign][1];
+                $columnRules[] = 'min:'.self::$integerTypes[$intType][$sign][0];
+                $columnRules[] = 'max:'.self::$integerTypes[$intType][$sign][1];
 
                 break;
             case $type->contains('double') ||
@@ -108,7 +108,7 @@ class SchemaRulesResolverMySql extends BaseSchemaRulesResolver implements Schema
             $type->contains('float'):
                 // should we do more specific here?
                 // some kind of regex validation for double, double unsigned, double(8, 2), decimal etc...?
-                $columnRules[] = "numeric";
+                $columnRules[] = 'numeric';
 
                 break;
             case $type->contains('enum') || $type->contains('set'):
