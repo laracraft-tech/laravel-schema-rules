@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.3 - 2023-10-19
+
+### What's changed
+
+- output generated rules info text only in console mode
+
 ## v1.3.2 - 2023-08-21
 
 ### What's Changed
