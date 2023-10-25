@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.4 - 2023-10-25
+
+### What's changed
+
+- fixed min length for sqlite driver
+
 ## v1.3.3 - 2023-10-19
 
 ### What's changed
