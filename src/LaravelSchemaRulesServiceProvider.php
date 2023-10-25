@@ -49,7 +49,7 @@ class LaravelSchemaRulesServiceProvider extends PackageServiceProvider
 
                     break;
                 default: throw new UnsupportedDbDriverException('This db driver is not supported: '.$driver);
-            };
+            }
 
             return new $class(...array_values($parameters));
         });
