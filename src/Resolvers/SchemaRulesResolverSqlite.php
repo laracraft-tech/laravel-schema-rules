@@ -45,7 +45,7 @@ class SchemaRulesResolverSqlite extends BaseSchemaRulesResolver implements Schem
                 break;
             case $type == 'varchar' || $type == 'text':
                 $columnRules[] = "string";
-                $columnRules[] = "min:".config('schema-rules.min_string');
+                $columnRules[] = "min:".config('schema-rules.string_min_length');
 
                 break;
             case $type == 'integer':
