@@ -9,6 +9,8 @@
 Automatically generate basic Laravel validation rules based on your database table schema!
 Use these as a starting point to fine-tune and optimize your validation rules as needed. 
 
+Here you can use the web version, if you like: [https://validationforlaravel.com](https://validationforlaravel.com)
+
 ## Installation
 
 You can install the package via composer:
