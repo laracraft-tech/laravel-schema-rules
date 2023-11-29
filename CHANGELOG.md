@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.5 - 2023-11-29
+
+### What's changed
+
+* fixed pgsql column order
+
 ## v1.3.4 - 2023-10-25
 
 ### What's changed
