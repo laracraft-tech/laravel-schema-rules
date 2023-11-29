@@ -24,7 +24,7 @@ class SchemaRulesResolverPgSql extends BaseSchemaRulesResolver implements Schema
             '
             SELECT column_name, data_type, character_maximum_length, is_nullable, column_default
                 FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE table_name = :table',
+            WHERE table_name = :table ORDER BY ordinal_position',
             ['table' => $tableName]
         ))->keyBy('column_name')->toArray();
 
