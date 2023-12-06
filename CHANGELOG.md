@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.3.6 - 2023-12-06
+
+### What's changed
+
+* fixed Laravel 10.35 dependency issue
+
 ## v1.3.5 - 2023-11-29
 
 ### What's changed
