@@ -258,11 +258,11 @@ it('generates numeric validation rules from table schema', function () {
         $decimalNullableColumnName
     ) {
         $table->float($floatColumnName);
-        $table->unsignedFloat($floatUnsignedColumnName);
+        $table->float($floatUnsignedColumnName)->unsigned();
         $table->double($doubleColumnName);
-        $table->unsignedDouble($doubleUnsignedColumnName);
+        $table->double($doubleUnsignedColumnName)->unsigned();
         $table->decimal($decimalColumnName);
-        $table->unsignedDecimal($decimalUnsignedColumnName);
+        $table->decimal($decimalUnsignedColumnName)->unsigned();
         $table->decimal($decimalNullableColumnName)->nullable();
     });
 
