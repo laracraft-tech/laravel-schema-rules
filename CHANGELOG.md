@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.4.0 - 2024-06-24
+
+### What's changed
+
+* Laravel 11 support by @dreammonkey
+
 ## v1.3.6 - 2023-12-06
 
 ### What's changed
