@@ -4,6 +4,4 @@ namespace LaracraftTech\LaravelSchemaRules\Exceptions;
 
 use Exception;
 
-class TableDoesNotExistException extends Exception
-{
-}
+class TableDoesNotExistException extends Exception {}
