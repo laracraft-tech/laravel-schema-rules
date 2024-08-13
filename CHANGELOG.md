@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.4.1 - 2024-08-13
+
+### What's changed
+
+* fixed default `schema-rules.skip_columns` by @dreammonkey in #28
+
 ## v1.4.0 - 2024-06-24
 
 ### What's changed
