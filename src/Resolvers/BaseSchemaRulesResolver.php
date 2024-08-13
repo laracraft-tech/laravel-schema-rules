@@ -21,7 +21,7 @@ abstract class BaseSchemaRulesResolver implements SchemaRulesResolverInterface
     {
         $tableColumns = $this->getColumnsDefinitionsFromTable();
 
-        $skip_columns = config('schema-rules.skip_columns');
+        $skip_columns = config('schema-rules.skip_columns', []);
 
         $tableRules = [];
         foreach ($tableColumns as $column) {

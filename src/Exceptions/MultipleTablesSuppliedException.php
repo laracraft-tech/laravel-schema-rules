@@ -4,6 +4,4 @@ namespace LaracraftTech\LaravelSchemaRules\Exceptions;
 
 use Exception;
 
-class MultipleTablesSuppliedException extends Exception
-{
-}
+class MultipleTablesSuppliedException extends Exception {}
