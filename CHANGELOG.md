@@ -2,6 +2,20 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.5.0 - 2025-02-23
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/laracraft-tech/laravel-schema-rules/pull/29
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/laracraft-tech/laravel-schema-rules/pull/30
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/laracraft-tech/laravel-schema-rules/pull/31
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/laracraft-tech/laravel-schema-rules/pull/31
+
+**Full Changelog**: https://github.com/laracraft-tech/laravel-schema-rules/compare/v1.4.1...v1.5.0
+
 ## v1.4.1 - 2024-08-13
 
 ### What's changed
