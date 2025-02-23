@@ -27,7 +27,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.13",
-        "nunomaduro/larastan": "^1.0 || ^2.5",
+        "nunomaduro/larastan": "^1.0 || ^2.5 || ^3.1",
         "orchestra/testbench": "^6.27 || ^7.0  || ^8.0 || ^9.0  || ^10.0",
         "pestphp/pest": "^1.22 || ^2.0 || ^3.7",
         "pestphp/pest-plugin-laravel": "^1.22 || ^2.0 || ^3.1",
