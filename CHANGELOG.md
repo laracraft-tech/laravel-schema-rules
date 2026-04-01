@@ -2,6 +2,22 @@
 
 All notable changes to `laravel-schema-rules` will be documented in this file.
 
+## v1.6.0 - 2026-04-01
+
+### What's Changed
+
+* laravel 13 support
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/32
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/33
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/34
+* Bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/35
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/37
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/38
+* Bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/36
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/laracraft-tech/laravel-schema-rules/pull/40
+
+**Full Changelog**: https://github.com/laracraft-tech/laravel-schema-rules/compare/v1.5.0...v1.6.0
+
 ## v1.5.0 - 2025-02-23
 
 ### What's Changed
